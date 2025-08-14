@@ -5,13 +5,13 @@
     <!-- Background Pattern -->
     <div class="absolute inset-0 bg-black opacity-20"></div>
     <div class="absolute inset-0" style="background-image: url('{{ asset('images/scene2.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-primary-800/60"></div>
+    <div class="absolute inset-0 "></div>
 
     <!-- Content -->
     <div class="relative container-custom py-24 lg:py-32">
         <div class="max-w-4xl mx-auto text-center">
             <!-- Main Heading -->
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-6 animate-fade-in">
                 Discover Amazing
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-300">
                     Events
@@ -20,7 +20,7 @@
             </h1>
 
             <!-- Subtitle -->
-            <p class="text-xl md:text-2xl text-primary-100 mb-8 animate-slide-up">
+            <p class="text-xl md:text-2xl text-black mb-8 animate-slide-up">
                 From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
             </p>
 
@@ -43,7 +43,7 @@
                         </a>
                     @endif
                 @else
-                    <a href="{{ route('register') }}" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-700">
+                    <a href="{{ route('register') }}" class="btn-outline btn-lg border-white text-white hover:bg-black hover:text-primary-700">
                         Join EvenXt
                     </a>
                 @endauth

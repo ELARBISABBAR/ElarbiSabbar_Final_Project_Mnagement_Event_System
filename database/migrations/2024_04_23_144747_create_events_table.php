@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime("date_end");
             $table->string("location");
             $table->integer("price");
-            $table->string("image");
+            $table->string("image")->nullable();
             $table->timestamps();
         });
     }
