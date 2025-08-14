@@ -49,8 +49,9 @@ Route::middleware('auth')->group(function () {
         // ^^ Create events page :
         Route::get('/event', [CreateEventsController::class, 'index'])->name('event.index');
         Route::post('/event/create', [CreateEventsController::class, 'store'])->name('event.post');
-        Route::put('/event/update/{event}', [CreateEventsController::class, 'update'])->name('event.update');
-        Route::delete('/event/delete/{event}', [CreateEventsController::class, 'destroy'])->name('event.delete');
+        Route::get('/event/{event}/edit', [CreateEventsController::class, 'edit'])->name('event.edit');
+        Route::put('/event/{event}', [CreateEventsController::class, 'update'])->name('event.update');
+        Route::delete('/event/{event}', [CreateEventsController::class, 'destroy'])->name('event.delete');
         Route::get('/calendar/events', [CreateEventsController::class, "show"]);
     });
     Route::middleware("role:admin")->group(function () {
@@ -64,9 +65,12 @@ Route::middleware('auth')->group(function () {
     // ^^ Ticket page :
     Route::get('/home/ticket/{event}', [TicketsController::class, 'show'])->name('ticket.show');
     Route::post('/home/ticket/post', [TicketsController::class, 'store'])->name('ticket.post');
+    Route::get('/ticket/{ticket}/payment', [TicketsController::class, 'payment'])->name('ticket.payment');
     Route::get('/success/{ticket}', [TicketsController::class, "success"])->name('success');
+    Route::get('/ticket/pdf/{ticket}', [TicketsController::class, 'pdf'])->name('ticket.pdf');
     // ^^ MyOrder page :
     Route::get('/myorder', [MyOrderController::class, 'index'])->name('myorder.index');
+    Route::get('/my/orders', [MyOrderController::class, 'index'])->name('my.orders');
 });
 
 require __DIR__ . '/auth.php';

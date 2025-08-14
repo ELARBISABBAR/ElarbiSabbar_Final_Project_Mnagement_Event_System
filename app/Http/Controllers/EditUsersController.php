@@ -10,7 +10,9 @@ class EditUsersController extends Controller
 {
     //
     public function index(){
-        return view("pages.edit_users.edit_users");
+        $users = User::all();
+        $numberEvent = 1;
+        return view("pages.edit_users.edit_users", compact('users', 'numberEvent'));
     }
 
     public function update(Request $request, User $user)

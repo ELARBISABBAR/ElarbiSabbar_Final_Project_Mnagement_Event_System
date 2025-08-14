@@ -16,14 +16,19 @@ class Tickets extends Model
         "price",
         "quantity",
         "pdf",
-        "payedBolean",
+        "is_paid",
+    ];
+
+    protected $casts = [
+        'is_paid' => 'boolean',
+        'price' => 'decimal:2',
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
     public function event(){
-        return $this->belongsTo(Events::class);
+        return $this->belongsTo(Events::class, 'event_id');
     }
     
 

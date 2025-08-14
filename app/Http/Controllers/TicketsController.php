@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Events;
 use App\Models\Tickets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 
@@ -31,24 +32,40 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = auth()->user()->id ;
-        request()->validate([
-            "price"=>"required",
-            "quantity"=>"required",
-            "eventId"=>"required",
-        ]);
-        $ticket = Tickets::create([   
-            "user_id"=>$userId,
-            "event_id"=>$request->eventId,
-            "price"=>$request->price,
-            "ticket_type"=>"normal",
-            "quantity"=>$request->quantity,
-            "pdf"=>"walo",
-            "payedBolean"=>false,
-
+        $request->validate([
+            "eventId" => "required|exists:events,id",
+            "ticket_type" => "required|in:standard,vip,student",
+            "price" => "required|numeric|min:0",
+            "quantity" => "required|integer|min:1|max:10",
         ]);
 
-        $event = Events::where('id' , $request->eventId)->first();
+        // Verify the event exists and is not in the past
+        $event = Events::findOrFail($request->eventId);
+        if ($event->date_start->isPast()) {
+            return redirect()->back()->with('error', 'Cannot purchase tickets for past events.');
+        }
+
+        // Verify the price matches the ticket type
+        $expectedPrice = match($request->ticket_type) {
+            'standard' => $event->price,
+            'vip' => $event->price * 1.5,
+            'student' => $event->price * 0.6,
+            default => $event->price
+        };
+
+        if (abs($request->price - $expectedPrice) > 0.01) {
+            return redirect()->back()->with('error', 'Invalid ticket price.');
+        }
+
+        $ticket = Tickets::create([
+            "user_id" => Auth::user()->id,
+            "event_id" => $request->eventId,
+            "price" => $request->price,
+            "ticket_type" => $request->ticket_type,
+            "quantity" => $request->quantity,
+            "pdf" => null,
+            "is_paid" => false,
+        ]);
         
 
 
@@ -80,10 +97,48 @@ class TicketsController extends Controller
         // return back();
 
     }
+    public function payment(Tickets $ticket)
+    {
+        // Check if the user owns this ticket
+        if ($ticket->user_id !== Auth::user()->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check if already paid
+        if ($ticket->is_paid) {
+            return redirect()->route('my.orders')->with('info', 'This ticket has already been paid for.');
+        }
+
+        $event = $ticket->event;
+
+        Stripe::setApiKey(config('stripe.sk'));
+
+        $session = Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            "name" => $event->title,
+                            "description" => $event->description
+                        ],
+                        'unit_amount'  => $ticket->price * $ticket->quantity * 100,
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('success', $ticket),
+            'cancel_url'  => route('my.orders'),
+        ]);
+
+        return redirect()->away($session->url);
+    }
+
     public function success(Tickets $ticket){
-        $ticket->payedBolean = true ;
+        $ticket->is_paid = true ;
         $ticket->save();
-        return redirect()->route('home');
+        return redirect()->route('my.orders')->with('success', 'Payment completed successfully!');
     }
 
     /**

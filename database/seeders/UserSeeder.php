@@ -14,47 +14,118 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // Create admin user
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@evenext.com',
+            'password' => Hash::make('password'),
+            'phone' => '+1-555-0101',
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
 
-        User::insert([
+        // Create organizers
+        $organizers = [
             [
-                'name'=>"achraf",
-                'email'=>"achraf@gmail.com",
-                'password'=>Hash::make("achraf@gmail.com"),
-                'phone'=>"0689226137",
-                'role'=>"admin",
+                'name' => 'Sarah Johnson',
+                'email' => 'sarah@evenext.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0102',
+                'role' => 'organizer',
+                'email_verified_at' => now(),
             ],
             [
-                'name'=>"userO1",
-                'email'=>"o1@gmail.com",
-                'password'=>Hash::make("o1@gmail.com"),
-                'phone'=>"0666666666",
-                'role'=>"organizer",
+                'name' => 'Michael Chen',
+                'email' => 'michael@evenext.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0103',
+                'role' => 'organizer',
+                'email_verified_at' => now(),
             ],
             [
-                'name'=>"userA1",
-                'email'=>"a1@gmail.com",
-                'password'=>Hash::make("a1@gmail.com"),
-                'phone'=>"0666666666",
-                'role'=>"attendee",
+                'name' => 'Emily Rodriguez',
+                'email' => 'emily@evenext.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0104',
+                'role' => 'organizer',
+                'email_verified_at' => now(),
             ],
-            [
-                'name'=>"userA2",
-                'email'=>"a2@gmail.com",
-                'password'=>Hash::make("a2@gmail.com"),
-                'phone'=>"0666666666",
-                'role'=>"attendee",
-            ],
-            [
-                'name'=>"userA3",
-                'email'=>"a3@gmail.com",
-                'password'=>Hash::make("a3@gmail.com"),
-                'phone'=>"0666666666",
-                'role'=>"attendee",
-            ],
-            ]
+        ];
 
-        );
-    
+        foreach ($organizers as $organizer) {
+            User::create($organizer);
+        }
+
+        // Create attendees
+        $attendees = [
+            [
+                'name' => 'John Smith',
+                'email' => 'john@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0201',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Lisa Wang',
+                'email' => 'lisa@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0202',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'David Brown',
+                'email' => 'david@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0203',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Maria Garcia',
+                'email' => 'maria@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0204',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'James Wilson',
+                'email' => 'james@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0205',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Anna Thompson',
+                'email' => 'anna@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0206',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Robert Lee',
+                'email' => 'robert@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0207',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Jennifer Davis',
+                'email' => 'jennifer@example.com',
+                'password' => Hash::make('password'),
+                'phone' => '+1-555-0208',
+                'role' => 'attendee',
+                'email_verified_at' => now(),
+            ],
+        ];
+
+        foreach ($attendees as $attendee) {
+            User::create($attendee);
+        }
     }
 }

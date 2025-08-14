@@ -20,6 +20,12 @@ class Events extends Model
         "image",
     ];
 
+    protected $casts = [
+        'date_start' => 'datetime',
+        'date_end' => 'datetime',
+        'price' => 'decimal:2',
+    ];
+
 
 
 
@@ -27,6 +33,6 @@ class Events extends Model
         return $this->belongsTo(User::class);
     }
     public function tickets(){
-        return $this->hasMany(Tickets::class);
+        return $this->hasMany(Tickets::class, 'event_id');
     }
 }

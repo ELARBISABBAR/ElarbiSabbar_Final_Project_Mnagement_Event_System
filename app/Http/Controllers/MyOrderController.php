@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tickets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyOrderController extends Controller
 {
@@ -11,7 +13,12 @@ class MyOrderController extends Controller
      */
     public function index()
     {
-        return view('pages.my_orders.my_orders');
+        $tickets = Tickets::with(['event', 'user'])
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $numberEvent = 1;
+        return view('pages.my_orders.my_orders', compact('tickets', 'numberEvent'));
     }
 
     /**

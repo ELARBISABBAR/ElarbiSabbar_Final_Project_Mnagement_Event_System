@@ -1,233 +1,212 @@
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}">
-                        {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> --}}
-                        <img class="w-[15vw] lg:w-[5vw] " src="{{ asset('images/logo-evenxt2.png') }}" alt="">
-                    </a>
-                </div>
-
-                <!-- Navigation Links -->
-
-                <div class="flex lg:pl-96 gap-2 ">
-                    <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex lg:pl-4 ">
-                        <x-nav-link class="font-semibold text-decoration-none " :href="route('home')" :active="request()->routeIs('home')">
-                            {{ __('Home') }}
-                        </x-nav-link>
+<nav x-data="{ open: false }" class="bg-white shadow-soft border-b border-secondary-200 sticky top-0 z-50">
+    <div class="container-custom">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="{{ route('home') }}" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">E</span>
                     </div>
-                    <div class="hidden space-x-2 sm:-my-px sm:ms-4 sm:flex">
-                        <x-nav-link class="font-semibold text-decoration-none" :href="route('contact')" :active="request()->routeIs('contact')">
-                            {{ __('Contact') }}
-                        </x-nav-link>
-                    </div>
-                    <div class="hidden space-x-2 sm:-my-px sm:ms-4 sm:flex">
-                        <x-nav-link class="font-semibold text-decoration-none" :href="route('about')" :active="request()->routeIs('about')">
-                            {{ __('About') }}
-                        </x-nav-link>
-                    </div>
-                    <div class="hidden space-x-2 sm:-my-px sm:ms-4 sm:flex">
-                        <x-nav-link class="font-semibold text-decoration-none" :href="route('blogs')" :active="request()->routeIs('blogs')">
-                            {{ __('Blogs') }}
-                        </x-nav-link>
-                    </div>
-
-
-                </div>
-
-                {{-- @auth
-                    @if (Auth::user()->role === 'admin')
-                        <div class="  ">
-                            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
-                                {{ __('contact') }}
-                            </x-responsive-nav-link>
-                        </div>
-                    @endif
-                @endauth --}}
-
-
-                {{-- <div class="hidden space-x-2 sm:-my-px sm:ms-4 sm:flex">
-                    <x-nav-link :href="route('test')" :active="request()->routeIs('test')">
-                        {{ __('Test') }}
-                    </x-nav-link>
-                </div> --}}
+                    <span class="text-xl font-bold text-secondary-900">EvenXt</span>
+                </a>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                @if (Auth::user())
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{{ route('home') }}"
+                   class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : 'nav-link-inactive' }}">
+                    Home
+                </a>
+                <a href="{{ route('contact') }}"
+                   class="nav-link {{ request()->routeIs('contact') ? 'nav-link-active' : 'nav-link-inactive' }}">
+                    Contact
+                </a>
+                <a href="{{ route('about') }}"
+                   class="nav-link {{ request()->routeIs('about') ? 'nav-link-active' : 'nav-link-inactive' }}">
+                    About
+                </a>
+                <a href="{{ route('blogs') }}"
+                   class="nav-link {{ request()->routeIs('blogs') ? 'nav-link-active' : 'nav-link-inactive' }}">
+                    Blog
+                </a>
+            </div>
+
+            <!-- User Menu -->
+            <div class="hidden md:flex items-center space-x-4">
+                @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <div class=""> {{ Auth::user()->name }}</div>
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                            <button class="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-secondary-700 hover:bg-secondary-100 transition-colors duration-200">
+                                <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-semibold">
+                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                    </span>
                                 </div>
+                                <span>{{ Auth::user()->name }}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <x-dropdown-link class="text-decoration-none" :href="route('myorder.index')">
-                                {{ __('My orders') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link class="text-decoration-none mb-1" :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
-
-                            @auth
-                                @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
-                                    <div class="px-4">
-                                        <hr class="m-0 py-1">
-                                    </div>
-                                    <x-dropdown-link class="text-decoration-none mb-1" :href="route('event.index')">
-                                        {{ __('Create Event') }}
-                                    </x-dropdown-link>
-                                    @if (Auth::user()->role === 'admin')
-                                        <x-dropdown-link class="text-decoration-none mb-1" :href="route('users.index')">
-                                            {{ __('Edit Users') }}
-                                        </x-dropdown-link>
-                                        <x-dropdown-link class="text-decoration-none mb-1" :href="route('event_admin.index')">
-                                            {{ __('Edit Events of users') }}
-                                        </x-dropdown-link>
-                                    @endif
-                                @endif
-                            @endauth
-
-                            <div class="px-4">
-                                <hr class="m-0 py-1">
+                            <div class="px-4 py-2 border-b border-secondary-200">
+                                <p class="text-sm font-medium text-secondary-900">{{ Auth::user()->name }}</p>
+                                <p class="text-sm text-secondary-500">{{ Auth::user()->email }}</p>
                             </div>
-                            <!-- Authentication -->
+
+                            <x-dropdown-link :href="route('myorder.index')" class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                                <span>My Orders</span>
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('profile.edit')" class="flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Profile</span>
+                            </x-dropdown-link>
+
+                            @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
+                                <div class="border-t border-secondary-200 my-1"></div>
+                                <x-dropdown-link :href="route('event.index')" class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    <span>Create Event</span>
+                                </x-dropdown-link>
+
+                                @if (Auth::user()->role === 'admin')
+                                    <x-dropdown-link :href="route('users.index')" class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                        </svg>
+                                        <span>Manage Users</span>
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('event_admin.index')" class="flex items-center space-x-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>Manage Events</span>
+                                    </x-dropdown-link>
+                                @endif
+                            @endif
+
+                            <div class="border-t border-secondary-200 my-1"></div>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link class="text-decoration-none" :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); this.closest('form').submit();"
+                                    class="flex items-center space-x-2 text-danger-600 hover:bg-danger-50">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    <span>Log Out</span>
                                 </x-dropdown-link>
                             </form>
-
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <div class=""> signUp/LogIn</div>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <x-dropdown-link class="text-decoration-none" :href="route('login')">
-                                {{ __('Log In') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link class="text-decoration-none mb-1" :href="route('register')">
-                                {{ __('Sign Up') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-
-                @endif
+                    <div class="flex items-center space-x-3">
+                        <a href="{{ route('login') }}" class="btn-outline-primary">
+                            Log In
+                        </a>
+                        <a href="{{ route('register') }}" class="btn-primary">
+                            Sign Up
+                        </a>
+                    </div>
+                @endauth
             </div>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button @click="open = !open"
+                    class="p-2 rounded-lg text-secondary-600 hover:bg-secondary-100 transition-colors duration-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2  space-y-1">
-            <x-responsive-nav-link class="text-decoration-none" :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('home') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2  space-y-1">
-            <x-responsive-nav-link class="text-decoration-none" :href="route('contact')" :active="request()->routeIs('contact')">
-                {{ __('Contact') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2  space-y-1">
-            <x-responsive-nav-link class="text-decoration-none" :href="route('about')" :active="request()->routeIs('about')">
-                {{ __('About') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2  space-y-1">
-            <x-responsive-nav-link class="text-decoration-none" :href="route('blogs')" :active="request()->routeIs('blogs')">
-                {{ __('Blogs') }}
-            </x-responsive-nav-link>
+    <!-- Mobile Navigation Menu -->
+    <div x-show="open" x-transition class="md:hidden border-t border-secondary-200 bg-white">
+        <div class="px-4 py-2 space-y-1">
+            <a href="{{ route('home') }}"
+               class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('home') ? 'bg-primary-100 text-primary-700' : 'text-secondary-600 hover:bg-secondary-100' }}">
+                Home
+            </a>
+            <a href="{{ route('contact') }}"
+               class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('contact') ? 'bg-primary-100 text-primary-700' : 'text-secondary-600 hover:bg-secondary-100' }}">
+                Contact
+            </a>
+            <a href="{{ route('about') }}"
+               class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('about') ? 'bg-primary-100 text-primary-700' : 'text-secondary-600 hover:bg-secondary-100' }}">
+                About
+            </a>
+            <a href="{{ route('blogs') }}"
+               class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('blogs') ? 'bg-primary-100 text-primary-700' : 'text-secondary-600 hover:bg-secondary-100' }}">
+                Blog
+            </a>
         </div>
 
-
-        <!-- Responsive Settings Options -->
-        @if (Auth::user())
-            <div class="pt-4 pb-1 border-t border-slate-100 dark:border-gray-600">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                        {{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+        @auth
+            <div class="border-t border-secondary-200 px-4 py-3">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center">
+                        <span class="text-white font-semibold">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-secondary-900">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-secondary-500">{{ Auth::user()->email }}</p>
+                    </div>
                 </div>
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link class="text-decoration-none" :href="route('myorder.index')">
-                        {{ __('My orders') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link class="text-decoration-none" :href="route('profile.edit')">
-                        {{ __('Profile') }}
-                    </x-responsive-nav-link>
 
-                    @auth
-                        @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
-                            <div class="">
-                                <hr class="m-0 py-1">
-                            </div>
-                            <x-dropdown-link class="text-decoration-none mb-1" :href="route('event.index')">
-                                {{ __('Create Event') }}
-                            </x-dropdown-link>
-                            @if (Auth::user()->role === 'admin')
-                                <x-dropdown-link class="text-decoration-none mb-1" :href="route('users.index')">
-                                    {{ __('Edit users') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link class="text-decoration-none mb-1" :href="route('event_admin.index')">
-                                    {{ __('Edit Events of users') }}
-                                </x-dropdown-link>
-                            @endif
+                <div class="space-y-1">
+                    <a href="{{ route('myorder.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                        My Orders
+                    </a>
+                    <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                        Profile
+                    </a>
+
+                    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
+                        <div class="border-t border-secondary-200 my-2"></div>
+                        <a href="{{ route('event.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                            Create Event
+                        </a>
+
+                        @if (Auth::user()->role === 'admin')
+                            <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                                Manage Users
+                            </a>
+                            <a href="{{ route('event_admin.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                                Manage Events
+                            </a>
                         @endif
-                        <div class="">
-                            <hr class="m-0 py-1">
-                        </div>
-                    @endauth
+                    @endif
 
-                    <!-- Authentication -->
+                    <div class="border-t border-secondary-200 my-2"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-responsive-nav-link class="text-decoration-none" :href="route('logout')"
-                            onclick="event.preventDefault();
-                                this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
+                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-lg text-sm text-danger-600 hover:bg-danger-50">
+                            Log Out
+                        </button>
                     </form>
                 </div>
             </div>
         @else
-        @endif
+            <div class="border-t border-secondary-200 px-4 py-3 space-y-2">
+                <a href="{{ route('login') }}" class="block w-full text-center btn-outline-primary">
+                    Log In
+                </a>
+                <a href="{{ route('register') }}" class="block w-full text-center btn-primary">
+                    Sign Up
+                </a>
+            </div>
+        @endauth
     </div>
 </nav>

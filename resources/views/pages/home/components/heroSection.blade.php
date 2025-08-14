@@ -1,46 +1,76 @@
 
 
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-black opacity-20"></div>
+    <div class="absolute inset-0" style="background-image: url('{{ asset('images/scene2.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-primary-800/60"></div>
 
-    <style>
-        header {
-            background: url('images/scene2.jpg');
-        }
-    </style>
+    <!-- Content -->
+    <div class="relative container-custom py-24 lg:py-32">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Main Heading -->
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in">
+                Discover Amazing
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-300">
+                    Events
+                </span>
+                Near You
+            </h1>
 
-<body>
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl text-primary-100 mb-8 animate-slide-up">
+                From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
+            </p>
 
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
+                <a href="#events" class="btn-primary btn-lg bg-white text-primary-700 hover:bg-primary-50 shadow-large">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Explore Events
+                </a>
 
-    <!-- Opened Nav in Mobile, you can use javascript/jQuery -->
-    {{-- <div id="nav-opened" class="fixed left-0 right-0 hidden bg-white mx-2 mt-16 rounded-br rounded-bl shadow z-10">
-        <div class="p-2 divide-y divide-gray-600 flex flex-col">
-            <a href="#about" class="p-2 font-semibold hover:text-indigo-700">About</a>
-            <a href="#whyus" class="p-2 font-semibold hover:text-indigo-700">Why Us ?</a>
-            <a href="#showcase" class="p-2 font-semibold hover:text-indigo-700">Our Products</a>
-        </div>
-    </div> --}}
+                @auth
+                    @if(Auth::user()->role === 'organizer' || Auth::user()->role === 'admin')
+                        <a href="{{ route('event.index') }}" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-700">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Create Event
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ route('register') }}" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-700">
+                        Join EvenXt
+                    </a>
+                @endauth
+            </div>
 
-    <header id="up" class="bg-center bg-fixed bg-no-repeat  bg-cover h-[60vh] relative">
-        <!-- Overlay Background + Center Control -->
-        <div class="h-[60vh] bg-opacity-25 bg-black flex items-center justify-center"
-            style="background:rgba(0,0,0,0.5);">
-            <div class="mx-2 text-center">
-                <h1 class="text-gray-100 font-extrabold text-4xl xs:text-5xl md:text-6xl">
-                    <span class="text-white">Find Your Perfect Event :</span> 
-                </h1>
-                <h2 class="text-gray-200 font-extrabold text-3xl xs:text-4xl md:text-5xl leading-tight">
-                    Get a <span class="text-white">Discover Unforgettable Experiences</span> 
-                </h2>
-                {{-- <div class="inline-flex">
-                    <button
-                        class="p-2 my-5 mx-2 bg-indigo-700  hover:bg-indigo-800 font-bold text-white rounded border-2 border-transparent hover:border-indigo-800 shadow-md transition duration-500 md:text-xl">Hire
-                        US!</button>
-                    <a href="#about"><button
-                            class="p-2 my-5 mx-2 bg-transparent border-2 bg-indigo-200 bg-opacity-75 hover:bg-opacity-100 border-indigo-700 rounded hover:border-indigo-800 font-bold text-indigo-800 shadow-md transition duration-500 md:text-lg">Learn
-                            More</button></a>
-                </div> --}}
+            <!-- Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16 pt-8 border-t border-primary-400/30">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">{{ \App\Models\Events::count() }}+</div>
+                    <div class="text-primary-200">Events Created</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">{{ \App\Models\User::where('role', 'attendee')->count() }}+</div>
+                    <div class="text-primary-200">Happy Attendees</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">{{ \App\Models\User::where('role', 'organizer')->count() }}+</div>
+                    <div class="text-primary-200">Event Organizers</div>
+                </div>
             </div>
         </div>
-    </header>
-</body>
+    </div>
 
-</html>
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+</section>
