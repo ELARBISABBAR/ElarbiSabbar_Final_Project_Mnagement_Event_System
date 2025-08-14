@@ -68,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/ticket/{ticket}/payment', [TicketsController::class, 'payment'])->name('ticket.payment');
     Route::get('/success/{ticket}', [TicketsController::class, "success"])->name('success');
     Route::get('/ticket/pdf/{ticket}', [TicketsController::class, 'pdf'])->name('ticket.pdf');
+    // Demo payment routes
+    Route::get('/demo/payment/{ticket}', [TicketsController::class, 'demoPayment'])->name('demo.payment');
+    Route::post('/demo/payment/{ticket}/process', [TicketsController::class, 'processDemoPayment'])->name('demo.payment.process');
     // ^^ MyOrder page :
     Route::get('/myorder', [MyOrderController::class, 'index'])->name('myorder.index');
     Route::get('/my/orders', [MyOrderController::class, 'index'])->name('my.orders');

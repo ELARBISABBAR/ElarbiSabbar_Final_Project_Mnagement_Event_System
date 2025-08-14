@@ -3,6 +3,55 @@
 @section('content')
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
+        <!-- Success/Error Messages -->
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6" role="alert">
+                <div class="flex">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-green-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold">Success!</p>
+                        <p class="text-sm">{{ session('success') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+                <div class="flex">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold">Error!</p>
+                        <p class="text-sm">{{ session('error') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-6" role="alert">
+                <div class="flex">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-blue-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold">Info</p>
+                        <p class="text-sm">{{ session('info') }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Breadcrumb -->
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -339,14 +388,15 @@
                 </div>
 
                 <div class="px-6 py-4 border-t border-secondary-200 flex justify-end space-x-3">
-                    <button type="button" onclick="closeTicketModal()" class="btn-outline-secondary">
+                    <button type="button" onclick="closeTicketModal()" class="btn-outline-secondary" id="cancelBtn">
                         Cancel
                     </button>
-                    <button type="submit" class="btn-primary">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="submit" class="btn-primary" id="purchaseBtn">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="purchaseIcon">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        Purchase Tickets
+                        <span id="purchaseText">Purchase Tickets</span>
+                        <div class="hidden animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2" id="loadingSpinner"></div>
                     </button>
                 </div>
             </form>
@@ -358,13 +408,27 @@
 <script>
     // Modal functions
     function openTicketModal() {
-        document.getElementById('ticketModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        console.log('Opening ticket modal...');
+        const modal = document.getElementById('ticketModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            console.log('Modal opened successfully');
+        } else {
+            console.error('Modal element not found!');
+        }
     }
 
     function closeTicketModal() {
-        document.getElementById('ticketModal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
+        console.log('Closing ticket modal...');
+        const modal = document.getElementById('ticketModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            console.log('Modal closed successfully');
+        } else {
+            console.error('Modal element not found!');
+        }
     }
 
     // Quantity functions
@@ -438,5 +502,59 @@
             closeTicketModal();
         }
     });
+
+    // Form submission with loading state
+    document.getElementById('ticketForm').addEventListener('submit', function(e) {
+        console.log('Form submission started...');
+
+        const ticketType = document.getElementById('ticketType').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('selectedPrice').value;
+
+        console.log('Form values:', { ticketType, quantity, price });
+
+        // Validate form
+        if (!ticketType) {
+            alert('Please select a ticket type.');
+            e.preventDefault();
+            return;
+        }
+
+        if (!quantity || quantity < 1) {
+            alert('Please select a valid quantity.');
+            e.preventDefault();
+            return;
+        }
+
+        if (!price || price <= 0) {
+            alert('Invalid ticket price.');
+            e.preventDefault();
+            return;
+        }
+
+        console.log('Form validation passed, submitting...');
+
+        // Show loading state
+        const purchaseBtn = document.getElementById('purchaseBtn');
+        const purchaseText = document.getElementById('purchaseText');
+        const purchaseIcon = document.getElementById('purchaseIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        purchaseBtn.disabled = true;
+        cancelBtn.disabled = true;
+        purchaseText.textContent = 'Processing...';
+        purchaseIcon.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+        purchaseBtn.classList.add('opacity-75');
+    });
+
+    // Handle cancelled payments
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('cancelled') === '1') {
+        alert('Payment was cancelled. You can try again anytime.');
+        // Remove the parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 </script>
 @endsection

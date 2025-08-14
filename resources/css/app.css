@@ -245,4 +245,39 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
+
+    /* Mobile Responsive Improvements */
+    @media (max-width: 768px) {
+        .container-custom {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .event-card {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary, .btn-secondary, .btn-outline-primary {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .modal-content {
+            margin: 1rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    }
+
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+        .btn-primary, .btn-secondary, .btn-outline-primary {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .form-input, .form-select {
+            min-height: 44px;
+        }
+    }
 }

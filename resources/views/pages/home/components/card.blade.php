@@ -8,11 +8,107 @@
                 class="event-card-image group-hover:scale-105 transition-transform duration-300"
             >
         @else
-            <div class="w-full h-48 bg-gradient-primary flex items-center justify-center">
-                <svg class="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-            </div>
+            @php
+                // Smart image selection based on event title and type
+                $eventTitle = strtolower($event->title);
+                $eventDescription = strtolower($event->description);
+
+                // Define image categories with high-quality Unsplash images
+                $imageCategories = [
+                    'tech' => [
+                        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop&crop=center', // Tech conference
+                        'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop&crop=center', // Programming
+                        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=400&fit=crop&crop=center', // Innovation
+                        'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=400&fit=crop&crop=center', // Technology
+                    ],
+                    'music' => [
+                        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=400&fit=crop&crop=center', // Concert
+                        'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&h=400&fit=crop&crop=center', // Music festival
+                        'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=400&fit=crop&crop=center', // Live music
+                        'https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?w=800&h=400&fit=crop&crop=center', // DJ/Electronic
+                    ],
+                    'business' => [
+                        'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=400&fit=crop&crop=center', // Business meeting
+                        'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop&crop=center', // Conference room
+                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop&crop=center', // Presentation
+                        'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=400&fit=crop&crop=center', // Team meeting
+                    ],
+                    'art' => [
+                        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=400&fit=crop&crop=center', // Art gallery
+                        'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=400&fit=crop&crop=center', // Art exhibition
+                        'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=400&fit=crop&crop=center', // Creative workshop
+                        'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop&crop=center', // Art studio
+                    ],
+                    'food' => [
+                        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=400&fit=crop&crop=center', // Fine dining
+                        'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&h=400&fit=crop&crop=center', // Wine tasting
+                        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=400&fit=crop&crop=center', // Food festival
+                        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=400&fit=crop&crop=center', // Cooking
+                    ],
+                    'fitness' => [
+                        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&crop=center', // Fitness class
+                        'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop&crop=center', // Yoga
+                        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=400&fit=crop&crop=center', // Gym workout
+                        'https://images.unsplash.com/photo-1506629905607-d9c297d3d45f?w=800&h=400&fit=crop&crop=center', // Wellness
+                    ],
+                    'education' => [
+                        'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=400&fit=crop&crop=center', // Workshop
+                        'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=400&fit=crop&crop=center', // Learning
+                        'https://images.unsplash.com/photo-1513258496099-48168024aec0?w=800&h=400&fit=crop&crop=center', // Classroom
+                        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=400&fit=crop&crop=center', // Study group
+                    ],
+                    'networking' => [
+                        'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=400&fit=crop&crop=center', // Networking event
+                        'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&h=400&fit=crop&crop=center', // Social gathering
+                        'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&h=400&fit=crop&crop=center', // Professional meetup
+                        'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&h=400&fit=crop&crop=center', // Community event
+                    ]
+                ];
+
+                // Determine category based on event title and description
+                $selectedCategory = 'networking'; // default
+
+                if (str_contains($eventTitle, 'tech') || str_contains($eventTitle, 'conference') ||
+                    str_contains($eventTitle, 'innovation') || str_contains($eventTitle, 'digital') ||
+                    str_contains($eventDescription, 'technology') || str_contains($eventDescription, 'programming')) {
+                    $selectedCategory = 'tech';
+                } elseif (str_contains($eventTitle, 'music') || str_contains($eventTitle, 'concert') ||
+                         str_contains($eventTitle, 'festival') || str_contains($eventTitle, 'jazz') ||
+                         str_contains($eventDescription, 'music') || str_contains($eventDescription, 'concert')) {
+                    $selectedCategory = 'music';
+                } elseif (str_contains($eventTitle, 'business') || str_contains($eventTitle, 'leadership') ||
+                         str_contains($eventTitle, 'summit') || str_contains($eventTitle, 'startup') ||
+                         str_contains($eventDescription, 'business') || str_contains($eventDescription, 'entrepreneur')) {
+                    $selectedCategory = 'business';
+                } elseif (str_contains($eventTitle, 'art') || str_contains($eventTitle, 'design') ||
+                         str_contains($eventTitle, 'gallery') || str_contains($eventTitle, 'exhibition') ||
+                         str_contains($eventDescription, 'art') || str_contains($eventDescription, 'creative')) {
+                    $selectedCategory = 'art';
+                } elseif (str_contains($eventTitle, 'food') || str_contains($eventTitle, 'wine') ||
+                         str_contains($eventTitle, 'tasting') || str_contains($eventTitle, 'culinary') ||
+                         str_contains($eventDescription, 'food') || str_contains($eventDescription, 'wine')) {
+                    $selectedCategory = 'food';
+                } elseif (str_contains($eventTitle, 'fitness') || str_contains($eventTitle, 'wellness') ||
+                         str_contains($eventTitle, 'health') || str_contains($eventTitle, 'yoga') ||
+                         str_contains($eventDescription, 'fitness') || str_contains($eventDescription, 'wellness')) {
+                    $selectedCategory = 'fitness';
+                } elseif (str_contains($eventTitle, 'workshop') || str_contains($eventTitle, 'masterclass') ||
+                         str_contains($eventTitle, 'training') || str_contains($eventTitle, 'education') ||
+                         str_contains($eventDescription, 'learn') || str_contains($eventDescription, 'workshop')) {
+                    $selectedCategory = 'education';
+                }
+
+                // Select image based on event ID for consistency
+                $images = $imageCategories[$selectedCategory];
+                $imageIndex = $event->id % count($images);
+                $selectedImage = $images[$imageIndex];
+            @endphp
+            <img
+                src="{{ $selectedImage }}"
+                alt="{{ $event->title }}"
+                class="event-card-image group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+            >
         @endif
 
         <!-- Price Badge -->

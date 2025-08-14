@@ -426,8 +426,15 @@
 <script>
     // Modal functions
     function openCreateModal() {
-        document.getElementById('createEventModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        console.log('Opening create event modal...');
+        const modal = document.getElementById('createEventModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            console.log('Create event modal opened successfully');
+        } else {
+            console.error('Create event modal element not found!');
+        }
     }
 
     function closeCreateModal() {
