@@ -7,6 +7,7 @@ use App\Http\Controllers\EventAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TicketsController;
 use App\Mail\ContactMailer;
@@ -61,6 +62,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/user/delete/{user}', [EditUsersController::class, 'destroy'])->name('user.delete');
         // ^^ Edit_events_admin page :
         Route::get('/events/admin', [EventAdminController::class, 'index'])->name('event_admin.index'); //admin
+        Route::patch('/events/{event}/approve', [EventAdminController::class, 'approve'])->name('event_admin.approve');
+        Route::patch('/events/{event}/reject', [EventAdminController::class, 'reject'])->name('event_admin.reject');
+        Route::delete('/events/{event}/delete', [EventAdminController::class, 'destroy'])->name('event_admin.delete');
     });
     // ^^ Ticket page :
     Route::get('/home/ticket/{event}', [TicketsController::class, 'show'])->name('ticket.show');
@@ -74,6 +78,11 @@ Route::middleware('auth')->group(function () {
     // ^^ MyOrder page :
     Route::get('/myorder', [MyOrderController::class, 'index'])->name('myorder.index');
     Route::get('/my/orders', [MyOrderController::class, 'index'])->name('my.orders');
+
+    // ^^ Review routes :
+    Route::post('/events/{event}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 require __DIR__ . '/auth.php';

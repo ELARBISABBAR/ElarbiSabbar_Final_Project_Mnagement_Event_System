@@ -191,7 +191,19 @@ class TicketsController extends Controller
      */
     public function show(Events $event)
     {
-        return view("pages.tickets.ticket", compact("event"));
+        // Load reviews with user information
+        $reviews = $event->reviews()->with('user')->latest()->paginate(10);
+
+        // Check if current user can review this event
+        $canReview = false;
+        $userReview = null;
+
+        if (Auth::check()) {
+            $canReview = $event->canUserReview(Auth::id());
+            $userReview = $event->reviews()->where('user_id', Auth::id())->first();
+        }
+
+        return view("pages.tickets.ticket", compact("event", "reviews", "canReview", "userReview"));
     }
 
     /**

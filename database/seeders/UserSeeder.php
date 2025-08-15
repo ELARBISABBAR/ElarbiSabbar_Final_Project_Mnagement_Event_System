@@ -14,11 +14,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
+        // Create admin user with specified credentials
         $admin = User::create([
             'name' => 'Admin User',
-            'email' => 'admin@evenext.com',
-            'password' => Hash::make('password'),
+            'email' => 'larbisbbar1234@gmail.com',
+            'password' => Hash::make('Lwalida1981@'),
             'phone' => '+1-555-0101',
             'role' => 'admin',
             'email_verified_at' => now(),

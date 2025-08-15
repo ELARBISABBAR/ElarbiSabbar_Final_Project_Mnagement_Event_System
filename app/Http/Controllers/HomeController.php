@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Events;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Events::with(['user', 'tickets'])
+        $query = Events::with(['user', 'tickets', 'category', 'reviews'])
+            ->approved() // Only show approved events
+            ->visibleTo(Auth::user()) // Filter by visibility based on user authentication
             ->where('date_start', '>=', now())
             ->orderBy('date_start', 'asc');
 
@@ -26,6 +30,11 @@ class HomeController extends Controller
         // Location filter
         if ($request->has('location') && $request->location) {
             $query->where('location', 'like', "%{$request->location}%");
+        }
+
+        // Category filter
+        if ($request->has('category') && $request->category) {
+            $query->where('category_id', $request->category);
         }
 
         // Price range filter
@@ -48,8 +57,10 @@ class HomeController extends Controller
 
         $events = $query->paginate(12);
 
-        // Get unique locations for filter dropdown
-        $locations = Events::where('date_start', '>=', now())
+        // Get unique locations for filter dropdown (only from approved and visible events)
+        $locations = Events::approved()
+            ->visibleTo(Auth::user())
+            ->where('date_start', '>=', now())
             ->distinct()
             ->pluck('location')
             ->map(function($location) {
@@ -59,6 +70,9 @@ class HomeController extends Controller
             ->sort()
             ->values();
 
-        return view("pages.home.home", compact('events', 'locations'));
+        // Get active categories for filter dropdown
+        $categories = Category::active()->orderBy('name')->get();
+
+        return view("pages.home.home", compact('events', 'locations', 'categories'));
     }
 }

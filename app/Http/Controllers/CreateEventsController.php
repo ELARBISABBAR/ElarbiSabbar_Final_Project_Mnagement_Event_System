@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Events;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,8 +13,9 @@ class CreateEventsController extends Controller
     //
     function index(){
         $events = Events::where('user_id', Auth::user()->id)->get();
+        $categories = Category::active()->orderBy('name')->get();
         $numberEvent = 1;
-        return view('pages.create_events.create_events', compact('events', 'numberEvent'));
+        return view('pages.create_events.create_events', compact('events', 'categories', 'numberEvent'));
     }
 
     function store(Request $request){
@@ -24,6 +26,8 @@ class CreateEventsController extends Controller
             "date_end" => "required|date|after:date_start",
             "location" => "required|string|max:255",
             "price" => "required|numeric|min:0",
+            "category_id" => "required|exists:categories,id",
+            "visibility" => "required|in:public,private,members_only",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
 
@@ -42,10 +46,13 @@ class CreateEventsController extends Controller
             "date_end" => $request->date_end,
             "location" => $request->location,
             "price" => $request->price,
-            "image" => $imageName
+            "category_id" => $request->category_id,
+            "visibility" => $request->visibility,
+            "image" => $imageName,
+            "status" => "pending" // All new events require admin approval
         ]);
 
-        return redirect()->back()->with('success', 'Event created successfully!');
+        return redirect()->back()->with('success', 'Event created successfully! Your event is pending admin approval and will be visible to attendees once approved.');
     }
 
     public function show(Events $event)
@@ -76,6 +83,7 @@ class CreateEventsController extends Controller
             'date_end' => $event->date_end->format('Y-m-d\TH:i'),
             'location' => $event->location,
             'price' => $event->price,
+            'visibility' => $event->visibility,
             'image' => $event->image,
         ]);
     }
@@ -94,6 +102,8 @@ class CreateEventsController extends Controller
             "date_end" => "required|date|after:date_start",
             "location" => "required|string|max:255",
             "price" => "required|numeric|min:0",
+            "category_id" => "required|exists:categories,id",
+            "visibility" => "required|in:public,private,members_only",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
 
@@ -116,6 +126,8 @@ class CreateEventsController extends Controller
             "date_end" => $request->date_end,
             "location" => $request->location,
             "price" => $request->price,
+            "category_id" => $request->category_id,
+            "visibility" => $request->visibility,
             "image" => $imageName
         ]);
 

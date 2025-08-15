@@ -311,6 +311,11 @@
     </div>
 </div>
 
+<!-- Reviews Section -->
+<div class="container-custom mb-8">
+    @include('pages.tickets.components.reviews')
+</div>
+
 <!-- Ticket Purchase Modal -->
 @auth
 <div id="ticketModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">

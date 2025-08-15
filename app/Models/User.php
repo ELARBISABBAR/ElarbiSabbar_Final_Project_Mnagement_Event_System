@@ -53,7 +53,12 @@ class User extends Authenticatable
     public function events(){
         return $this->hasMany(Events::class);
     }
+
     public function tickets(){
         return $this->hasMany(Tickets::class);
+    }
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
     }
 }

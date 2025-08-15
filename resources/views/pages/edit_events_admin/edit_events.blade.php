@@ -20,13 +20,6 @@
 
         <!-- Event Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            @php
-                $totalEvents = $events->count();
-                $upcomingEvents = $events->where('date_start', '>', now())->count();
-                $pastEvents = $events->where('date_start', '<', now())->count();
-                $todayEvents = $events->where('date_start', '>=', now()->startOfDay())->where('date_start', '<=', now()->endOfDay())->count();
-            @endphp
-
             <div class="card">
                 <div class="card-body">
                     <div class="flex items-center">
@@ -37,23 +30,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-secondary-600">Total Events</p>
-                            <p class="text-2xl font-bold text-secondary-900">{{ $totalEvents }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-success-100 rounded-lg">
-                            <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-secondary-600">Upcoming</p>
-                            <p class="text-2xl font-bold text-secondary-900">{{ $upcomingEvents }}</p>
+                            <p class="text-2xl font-bold text-secondary-900">{{ $stats['total_events'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -68,8 +45,8 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-secondary-600">Today</p>
-                            <p class="text-2xl font-bold text-secondary-900">{{ $todayEvents }}</p>
+                            <p class="text-sm font-medium text-secondary-600">Pending Approval</p>
+                            <p class="text-2xl font-bold text-secondary-900">{{ $stats['pending_events'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -78,14 +55,30 @@
             <div class="card">
                 <div class="card-body">
                     <div class="flex items-center">
-                        <div class="p-3 bg-secondary-100 rounded-lg">
-                            <svg class="w-6 h-6 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        <div class="p-3 bg-success-100 rounded-lg">
+                            <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-secondary-600">Completed</p>
-                            <p class="text-2xl font-bold text-secondary-900">{{ $pastEvents }}</p>
+                            <p class="text-sm font-medium text-secondary-600">Approved</p>
+                            <p class="text-2xl font-bold text-secondary-900">{{ $stats['approved_events'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-danger-100 rounded-lg">
+                            <svg class="w-6 h-6 text-danger-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-secondary-600">Rejected</p>
+                            <p class="text-2xl font-bold text-secondary-900">{{ $stats['rejected_events'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -174,18 +167,32 @@
 
                                 <!-- Status -->
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($event->date_start->isPast())
-                                        <span class="badge-secondary">Completed</span>
-                                    @elseif($event->date_start->isToday())
-                                        <span class="badge-warning">Today</span>
+                                    @if($event->status === 'approved')
+                                        <span class="badge-success">Approved</span>
+                                        @if($event->approved_at)
+                                            <div class="text-xs text-secondary-500 mt-1">
+                                                {{ $event->approved_at->format('M j, Y') }}
+                                            </div>
+                                        @endif
+                                    @elseif($event->status === 'rejected')
+                                        <span class="badge-danger">Rejected</span>
+                                        @if($event->rejection_reason)
+                                            <div class="text-xs text-secondary-500 mt-1" title="{{ $event->rejection_reason }}">
+                                                {{ Str::limit($event->rejection_reason, 30) }}
+                                            </div>
+                                        @endif
                                     @else
-                                        <span class="badge-success">Upcoming</span>
+                                        <span class="badge-warning">Pending</span>
+                                        <div class="text-xs text-secondary-500 mt-1">
+                                            Awaiting approval
+                                        </div>
                                     @endif
                                 </td>
 
                                 <!-- Actions -->
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end space-x-2">
+                                        <!-- View Event -->
                                         <a
                                             href="{{ route('ticket.show', $event) }}"
                                             class="text-secondary-600 hover:text-secondary-900 transition-colors duration-200"
@@ -197,25 +204,50 @@
                                             </svg>
                                         </a>
 
-                                        <button
-                                            onclick="editEvent({{ $event->id }})"
-                                            class="text-primary-600 hover:text-primary-900 transition-colors duration-200"
-                                            title="Edit Event"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                        </button>
+                                        @if($event->status === 'pending')
+                                            <!-- Approve Button -->
+                                            <form method="POST" action="{{ route('event_admin.approve', $event) }}" class="inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button
+                                                    type="submit"
+                                                    class="text-success-600 hover:text-success-900 transition-colors duration-200"
+                                                    title="Approve Event"
+                                                    onclick="return confirm('Are you sure you want to approve this event?')"
+                                                >
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
 
-                                        <button
-                                            onclick="deleteEvent({{ $event->id }}, '{{ $event->title }}')"
-                                            class="text-danger-600 hover:text-danger-900 transition-colors duration-200"
-                                            title="Delete Event"
-                                        >
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                        </button>
+                                            <!-- Reject Button -->
+                                            <button
+                                                onclick="showRejectModal({{ $event->id }}, '{{ $event->title }}')"
+                                                class="text-warning-600 hover:text-warning-900 transition-colors duration-200"
+                                                title="Reject Event"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        @endif
+
+                                        <!-- Delete Button -->
+                                        <form method="POST" action="{{ route('event_admin.delete', $event) }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                type="submit"
+                                                class="text-danger-600 hover:text-danger-900 transition-colors duration-200"
+                                                title="Delete Event"
+                                                onclick="return confirm('Are you sure you want to delete this event? This action cannot be undone.')"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -239,35 +271,68 @@
     </div>
 </div>
 
+<!-- Reject Event Modal -->
+<div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-medium text-secondary-900 mb-4">Reject Event</h3>
+                <p class="text-secondary-600 mb-4">Please provide a reason for rejecting this event:</p>
+
+                <form id="rejectForm" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <textarea
+                        name="rejection_reason"
+                        rows="4"
+                        class="form-input w-full mb-4"
+                        placeholder="Enter rejection reason..."
+                        required
+                    ></textarea>
+
+                    <div class="flex justify-end space-x-3">
+                        <button
+                            type="button"
+                            onclick="hideRejectModal()"
+                            class="btn-outline"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn-danger"
+                        >
+                            Reject Event
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Edit event function
-    function editEvent(eventId) {
-        // Redirect to edit page or open modal
-        window.location.href = `/event/${eventId}/edit`;
+    // Show reject modal
+    function showRejectModal(eventId, eventTitle) {
+        const modal = document.getElementById('rejectModal');
+        const form = document.getElementById('rejectForm');
+        form.action = `/events/${eventId}/reject`;
+        modal.classList.remove('hidden');
     }
 
-    // Delete event function
-    function deleteEvent(eventId, eventTitle) {
-        if (confirm(`Are you sure you want to delete "${eventTitle}"? This action cannot be undone.`)) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/event/${eventId}`;
+    // Hide reject modal
+    function hideRejectModal() {
+        const modal = document.getElementById('rejectModal');
+        const form = document.getElementById('rejectForm');
+        form.reset();
+        modal.classList.add('hidden');
+    }
 
-            const csrfToken = document.createElement('input');
-            csrfToken.type = 'hidden';
-            csrfToken.name = '_token';
-            csrfToken.value = '{{ csrf_token() }}';
-
-            const methodField = document.createElement('input');
-            methodField.type = 'hidden';
-            methodField.name = '_method';
-            methodField.value = 'DELETE';
-
-            form.appendChild(csrfToken);
-            form.appendChild(methodField);
-            document.body.appendChild(form);
-            form.submit();
+    // Close modal when clicking outside
+    document.getElementById('rejectModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideRejectModal();
         }
-    }
+    });
 </script>
 @endsection

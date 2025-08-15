@@ -41,7 +41,7 @@
     <section id="events" class="bg-white py-8 border-b border-secondary-200">
         <div class="container-custom">
             <form method="GET" action="{{ route('home') }}" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     <!-- Search Input -->
                     <div class="lg:col-span-2">
                         <input
@@ -51,6 +51,18 @@
                             placeholder="Search events, locations, or descriptions..."
                             class="form-input w-full"
                         >
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div>
+                        <select name="category" class="form-input w-full">
+                            <option value="">All Categories</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- Location Filter -->
