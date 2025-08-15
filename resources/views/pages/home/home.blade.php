@@ -38,7 +38,7 @@
     @endif
 
     <!-- Search and Filter Section -->
-    <section class="bg-white py-8 border-b border-secondary-200">
+    <section id="events" class="bg-white py-8 border-b border-secondary-200">
         <div class="container-custom">
             <form method="GET" action="{{ route('home') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -153,31 +153,41 @@
     </section>
 
     <!-- Events Section -->
-    <section class="py-12 bg-secondary-50">
+    <section class="py-16 bg-gradient-to-br from-secondary-50 to-white">
         <div class="container-custom">
             <!-- Section Header -->
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-secondary-900 mb-4">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6">
+                    <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
                     @if(request()->hasAny(['search', 'location', 'min_price', 'max_price', 'date_from', 'date_to']))
-                        Search Results
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Search Results</span>
                     @else
-                        Upcoming Events
+                        All <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Events</span>
                     @endif
                 </h2>
-                <p class="text-secondary-600 max-w-2xl mx-auto">
-                    Discover amazing events happening near you. From conferences to concerts, find your next great experience.
+                <p class="text-xl text-secondary-600 max-w-3xl mx-auto leading-relaxed">
+                    Discover amazing events happening near you. From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
                 </p>
 
                 @if($events->total() > 0)
-                    <p class="text-sm text-secondary-500 mt-2">
-                        Showing {{ $events->firstItem() }}-{{ $events->lastItem() }} of {{ $events->total() }} events
-                    </p>
+                    <div class="mt-8 inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm border border-secondary-200">
+                        <svg class="w-5 h-5 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-secondary-700">
+                            Showing {{ $events->firstItem() }}-{{ $events->lastItem() }} of {{ $events->total() }} events
+                        </span>
+                    </div>
                 @endif
             </div>
 
             <!-- Events Grid -->
             @if($events->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
                     @foreach ($events as $event)
                         @include('pages.home.components.card')
                     @endforeach
@@ -185,7 +195,9 @@
 
                 <!-- Pagination -->
                 <div class="flex justify-center">
-                    {{ $events->appends(request()->query())->links() }}
+                    <div class="bg-white rounded-xl shadow-soft border border-secondary-200 p-4">
+                        {{ $events->appends(request()->query())->links() }}
+                    </div>
                 </div>
             @else
                 <!-- No Events Found -->

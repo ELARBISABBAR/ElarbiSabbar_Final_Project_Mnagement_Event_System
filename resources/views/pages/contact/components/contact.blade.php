@@ -97,16 +97,15 @@
                         <!-- {/* submit button div  */} -->
                         <div class="flex items-center justify-center md:justify-end py-4 px-8 ">
                             <!-- {/* submit button  */} -->
-                            <button
-                                class=" lg:py-1  px-2  md:px-6 bg-[#2c323f] rounded-md border-2 border-white flex items-center gap-2 hover:scale-95 transition-all">
-                                <span class="text-xl">Submit</span>
+                            <button type="submit" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-[#2c323f]">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-brand-telegram" width="30" height="30"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" fill="none"
+                                    class="w-5 h-5 mr-2"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
                                 </svg>
+                                Send Message
                             </button>
                         </div>
                     </form>
