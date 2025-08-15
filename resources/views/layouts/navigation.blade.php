@@ -3,11 +3,15 @@
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">E</span>
+                <a href="{{ route('home') }}" class="logo-container group">
+                    <div class="logo-icon">
+                        <div class="logo-geometric group-hover:scale-105 transition-transform duration-300"></div>
+                        <span class="logo-letter-sm">E</span>
                     </div>
-                    <span class="text-xl font-bold text-secondary-900">EvenXt</span>
+                    <div class="flex flex-col">
+                        <span class="logo-text logo-text-sm leading-none">EvenXt</span>
+                        <span class="text-xs text-secondary-500 font-medium tracking-wide">EVENTS</span>
+                    </div>
                 </a>
             </div>
 

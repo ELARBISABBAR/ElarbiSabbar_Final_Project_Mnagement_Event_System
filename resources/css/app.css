@@ -280,4 +280,199 @@
             min-height: 44px;
         }
     }
+
+    /* Professional Logo Styles */
+    .logo-container {
+        @apply flex items-center space-x-3;
+    }
+
+    .logo-icon {
+        @apply relative flex items-center justify-center;
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-icon-large {
+        @apply relative flex items-center justify-center;
+        width: 48px;
+        height: 48px;
+    }
+
+    .logo-icon-hero {
+        @apply relative flex items-center justify-center;
+        width: 64px;
+        height: 64px;
+    }
+
+    .logo-geometric {
+        @apply absolute inset-0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        transform: rotate(-5deg);
+    }
+
+    .logo-geometric::before {
+        content: '';
+        @apply absolute inset-0;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        border-radius: 8px;
+        transform: rotate(10deg);
+        opacity: 0.8;
+    }
+
+    .logo-letter {
+        @apply relative z-10 text-white font-black;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-letter-sm {
+        @apply logo-letter text-xl;
+    }
+
+    .logo-letter-md {
+        @apply logo-letter text-2xl;
+    }
+
+    .logo-letter-lg {
+        @apply logo-letter text-3xl;
+    }
+
+    .logo-text {
+        @apply font-black tracking-tight;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .logo-text-white {
+        @apply font-black tracking-tight text-white;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-text-sm {
+        @apply text-xl;
+    }
+
+    .logo-text-md {
+        @apply text-2xl;
+    }
+
+    .logo-text-lg {
+        @apply text-3xl;
+    }
+
+    .logo-text-xl {
+        @apply text-4xl;
+    }
+
+    /* Logo hover effects */
+    .logo-container:hover .logo-geometric {
+        transform: rotate(-3deg) scale(1.05);
+        transition: all 0.3s ease;
+    }
+
+    .logo-container:hover .logo-geometric::before {
+        transform: rotate(8deg) scale(1.02);
+        transition: all 0.3s ease;
+    }
+
+    /* Logo animations */
+    @keyframes logoFloat {
+        0%, 100% { transform: translateY(0px) rotate(-5deg); }
+        50% { transform: translateY(-2px) rotate(-3deg); }
+    }
+
+    .logo-animated .logo-geometric {
+        animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    /* Responsive Logo Styles */
+    @media (max-width: 768px) {
+        .logo-container {
+            @apply space-x-2;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-icon-large {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-icon-hero {
+            width: 48px;
+            height: 48px;
+        }
+
+        .logo-geometric {
+            border-radius: 8px;
+        }
+
+        .logo-geometric::before {
+            border-radius: 6px;
+        }
+
+        .logo-letter-sm {
+            @apply text-lg;
+        }
+
+        .logo-letter-md {
+            @apply text-xl;
+        }
+
+        .logo-letter-lg {
+            @apply text-2xl;
+        }
+
+        .logo-text-sm {
+            @apply text-lg;
+        }
+
+        .logo-text-md {
+            @apply text-xl;
+        }
+
+        .logo-text-lg {
+            @apply text-2xl;
+        }
+
+        .logo-text-xl {
+            @apply text-3xl;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo-icon-hero {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-letter-lg {
+            @apply text-xl;
+        }
+
+        .logo-text-xl {
+            @apply text-2xl;
+        }
+    }
+
+    /* Logo accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        .logo-animated .logo-geometric {
+            animation: none;
+        }
+
+        .logo-container:hover .logo-geometric,
+        .logo-container:hover .logo-geometric::before {
+            transform: none;
+            transition: none;
+        }
+    }
 }

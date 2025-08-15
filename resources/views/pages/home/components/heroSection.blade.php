@@ -10,6 +10,20 @@
     <!-- Content -->
     <div class="relative container-custom py-24 lg:py-32">
         <div class="max-w-4xl mx-auto text-center">
+            <!-- Hero Logo -->
+            <div class="flex justify-center mb-8 animate-fade-in">
+                <div class="logo-container logo-animated">
+                    <div class="logo-icon-hero">
+                        <div class="logo-geometric"></div>
+                        <span class="logo-letter-lg">E</span>
+                    </div>
+                    <div class="flex flex-col items-start">
+                        <span class="logo-text-white logo-text-xl leading-none">EvenXt</span>
+                        <span class="text-lg text-white font-semibold tracking-widest opacity-90">EVENTS PLATFORM</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Main Heading -->
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-6 animate-fade-in">
                 Discover Amazing
@@ -20,7 +34,7 @@
             </h1>
 
             <!-- Subtitle -->
-            <p class="text-xl md:text-2xl text-black mb-8 animate-slide-up">
+            <p class="text-xl md:text-2xl text-white mb-8 animate-slide-up">
                 From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
             </p>
 
@@ -35,7 +49,7 @@
 
                 @auth
                     @if(Auth::user()->hasRole('organizer') || Auth::user()->hasRole('admin') || Auth::user()->role === 'organizer' || Auth::user()->role === 'admin')
-                        <a href="{{ route('event.index') }}" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-700">
+                        <a href="{{ route('event.index') }}" class="btn-outline btn-lg border-white text-white hover:bg-black hover:text-primary-700">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>

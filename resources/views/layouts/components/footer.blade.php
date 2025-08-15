@@ -3,11 +3,15 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Brand Section -->
             <div class="lg:col-span-2">
-                <div class="flex items-center space-x-2 mb-4">
-                    <div class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">E</span>
+                <div class="logo-container mb-6">
+                    <div class="logo-icon-large">
+                        <div class="logo-geometric"></div>
+                        <span class="logo-letter-md">E</span>
                     </div>
-                    <span class="text-2xl font-bold">EvenXt</span>
+                    <div class="flex flex-col">
+                        <span class="logo-text-white logo-text-md leading-none">EvenXt</span>
+                        <span class="text-sm text-secondary-400 font-medium tracking-wide">EVENTS PLATFORM</span>
+                    </div>
                 </div>
                 <p class="text-secondary-300 mb-6 max-w-md">
                     Discover and attend amazing events in your area. From conferences to concerts,
