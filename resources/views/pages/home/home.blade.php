@@ -47,9 +47,11 @@
                         <input
                             type="text"
                             name="search"
+                            id="liveSearchInput"
                             value="{{ request('search') }}"
                             placeholder="Search events, locations, or descriptions..."
                             class="form-input w-full"
+                            autocomplete="off"
                         >
                     </div>
 
@@ -182,32 +184,51 @@
                     @endif
                 </h2>
 
-                @if($events->total() > 0)
-                    <div class="mt-8 inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm border border-secondary-200">
-                        <svg class="w-5 h-5 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                        </svg>
-                        <span class="text-sm font-medium text-secondary-700">
-                            Showing {{ $events->firstItem() }}-{{ $events->lastItem() }} of {{ $events->total() }} events
-                        </span>
-                    </div>
-                @endif
+
             </div>
 
             <!-- Events Grid -->
             @if($events->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+                <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8">
                     @foreach ($events as $event)
                         @include('pages.home.components.card')
                     @endforeach
                 </div>
 
-                <!-- Pagination -->
-                <div class="flex justify-center">
-                    <div class="bg-white rounded-xl shadow-soft border border-secondary-200 p-4">
-                        {{ $events->appends(request()->query())->links() }}
+                <!-- Event Count Indicator - Moved below events grid -->
+                <div id="eventCountIndicator" class="flex justify-center mb-8">
+                    <div class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm border border-secondary-200">
+                        <svg class="w-5 h-5 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <span id="eventCountText" class="text-sm font-medium text-secondary-700">
+                            Showing {{ $events->firstItem() }}-{{ $events->lastItem() }} of {{ $events->total() }} events
+                        </span>
                     </div>
                 </div>
+
+                <!-- No Results Message (Hidden by default) -->
+                <div id="noResultsMessage" class="text-center py-12 hidden">
+                    <svg class="w-16 h-16 text-secondary-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-secondary-900 mb-2">No events found</h3>
+                    <p class="text-secondary-600 max-w-md mx-auto">
+                        We couldn't find any events matching your search. Try adjusting your search terms or browse all events.
+                    </p>
+                    <button id="clearSearchBtn" class="mt-4 btn-primary">
+                        Clear Search
+                    </button>
+                </div>
+
+                <!-- Pagination - Only show when more than 4 events -->
+                @if($events->total() > 4)
+                    {{-- <div class="flex justify-center">
+                        <div class="bg-white rounded-xl shadow-soft border border-secondary-200 p-4">
+                            {{ $events->appends(request()->query())->links() }}
+                        </div>
+                    </div> --}}
+                @endif
             @else
                 <!-- No Events Found -->
                 <div class="text-center py-12">
@@ -237,3 +258,182 @@
     @include('pages.home.components.statistic')
     @include('pages.home.components.sponsor')
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('liveSearchInput');
+    const eventsGrid = document.getElementById('eventsGrid');
+    const eventCountIndicator = document.getElementById('eventCountIndicator');
+    const eventCountText = document.getElementById('eventCountText');
+    const noResultsMessage = document.getElementById('noResultsMessage');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+    let allEvents = [];
+    let searchTimeout;
+
+    // Store original event data
+    if (eventsGrid) {
+        allEvents = Array.from(eventsGrid.querySelectorAll('.event-card'));
+    }
+
+    // Store original count text
+    const originalCountText = eventCountText ? eventCountText.textContent : '';
+    const totalEvents = allEvents.length;
+
+    // Real-time search function
+    function performLiveSearch(searchTerm) {
+        const query = searchTerm.toLowerCase().trim();
+
+        // Add visual feedback for active search
+        if (query !== '') {
+            searchInput.classList.add('ring-2', 'ring-primary-200', 'border-primary-300');
+        } else {
+            searchInput.classList.remove('ring-2', 'ring-primary-200', 'border-primary-300');
+        }
+
+        if (query === '') {
+            // Show all events when search is empty
+            showAllEvents();
+            return;
+        }
+
+        let visibleEvents = [];
+
+        allEvents.forEach(eventCard => {
+            const title = eventCard.dataset.title || '';
+            const description = eventCard.dataset.description || '';
+            const location = eventCard.dataset.location || '';
+            const category = eventCard.dataset.category || '';
+            const organizer = eventCard.dataset.organizer || '';
+
+            // Check if search term matches any of the searchable fields
+            const matches = title.includes(query) ||
+                          description.includes(query) ||
+                          location.includes(query) ||
+                          category.includes(query) ||
+                          organizer.includes(query);
+
+            if (matches) {
+                eventCard.style.display = 'block';
+                eventCard.classList.remove('hidden');
+                visibleEvents.push(eventCard);
+            } else {
+                eventCard.style.display = 'none';
+                eventCard.classList.add('hidden');
+            }
+        });
+
+        // Update count and show/hide no results message
+        updateEventCount(visibleEvents.length, query);
+
+        if (visibleEvents.length === 0) {
+            showNoResults();
+        } else {
+            hideNoResults();
+        }
+    }
+
+    // Show all events
+    function showAllEvents() {
+        allEvents.forEach(eventCard => {
+            eventCard.style.display = 'block';
+            eventCard.classList.remove('hidden');
+        });
+
+        // Restore original count
+        if (eventCountText) {
+            eventCountText.textContent = originalCountText;
+        }
+
+        hideNoResults();
+    }
+
+    // Update event count display
+    function updateEventCount(visibleCount, searchTerm) {
+        if (eventCountText) {
+            if (searchTerm) {
+                eventCountText.textContent = `Showing ${visibleCount} of ${totalEvents} events for "${searchTerm}"`;
+            } else {
+                eventCountText.textContent = originalCountText;
+            }
+        }
+    }
+
+    // Show no results message
+    function showNoResults() {
+        if (noResultsMessage) {
+            noResultsMessage.classList.remove('hidden');
+        }
+        if (eventCountIndicator) {
+            eventCountIndicator.classList.add('hidden');
+        }
+    }
+
+    // Hide no results message
+    function hideNoResults() {
+        if (noResultsMessage) {
+            noResultsMessage.classList.add('hidden');
+        }
+        if (eventCountIndicator) {
+            eventCountIndicator.classList.remove('hidden');
+        }
+    }
+
+    // Clear search function
+    function clearSearch() {
+        if (searchInput) {
+            searchInput.value = '';
+            searchInput.classList.remove('ring-2', 'ring-primary-200', 'border-primary-300');
+            showAllEvents();
+            searchInput.focus();
+        }
+    }
+
+    // Event listeners
+    if (searchInput) {
+        // Real-time search with debouncing
+        searchInput.addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performLiveSearch(e.target.value);
+            }, 150); // 150ms debounce for better performance
+        });
+
+        // Handle paste events
+        searchInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                performLiveSearch(e.target.value);
+            }, 10);
+        });
+
+        // Handle clear button (X) in search input
+        searchInput.addEventListener('search', function(e) {
+            if (e.target.value === '') {
+                showAllEvents();
+            }
+        });
+    }
+
+    // Clear search button
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', clearSearch);
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchParam = urlParams.get('search');
+        if (searchInput && searchParam !== searchInput.value) {
+            searchInput.value = searchParam || '';
+            performLiveSearch(searchInput.value);
+        }
+    });
+
+    // Initialize search if there's a value in the input
+    if (searchInput && searchInput.value.trim() !== '') {
+        performLiveSearch(searchInput.value);
+    }
+});
+</script>
+@endpush

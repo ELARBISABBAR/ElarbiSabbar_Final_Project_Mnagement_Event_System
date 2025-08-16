@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeAttendee;
+use App\Mail\WelcomeOrganizer;
+use App\Mail\NewOrganizerNotification;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -48,6 +53,32 @@ class RegisteredUserController extends Controller
         // Assign role using Spatie Permission package
         $user->assignRole($request->role);
         event(new Registered($user));
+
+        // Send welcome emails based on user role
+        try {
+            if ($user->hasRole('organizer')) {
+                // Send welcome email to organizer
+                Mail::to($user->email)->send(new WelcomeOrganizer($user));
+
+                // Send notification to admin about new organizer
+                $adminUsers = User::role('admin')->get();
+                foreach ($adminUsers as $admin) {
+                    Mail::to($admin->email)->send(new NewOrganizerNotification($user));
+                }
+
+                Log::info('Welcome organizer and admin notification emails sent', ['user_id' => $user->id]);
+            } else {
+                // Send welcome email to attendee
+                Mail::to($user->email)->send(new WelcomeAttendee($user));
+                Log::info('Welcome attendee email sent', ['user_id' => $user->id]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to send welcome email', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+            // Don't fail registration if email fails
+        }
 
         Auth::login($user);
 

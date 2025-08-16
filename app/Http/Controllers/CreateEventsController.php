@@ -2,20 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventCreated;
+use App\Mail\NewEventNotification;
 use App\Models\Events;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class CreateEventsController extends Controller
 {
     //
     function index(){
-        $events = Events::where('user_id', Auth::user()->id)->get();
+        // Get all events for the current organizer with proper ordering
+        $events = Events::where('user_id', Auth::user()->id)
+                        ->with(['category', 'tickets'])
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
         $categories = Category::active()->orderBy('name')->get();
         $numberEvent = 1;
-        return view('pages.create_events.create_events', compact('events', 'categories', 'numberEvent'));
+
+        // Add statistics for better user understanding
+        $stats = [
+            'total_events' => $events->count(),
+            'approved_events' => $events->where('status', 'approved')->count(),
+            'pending_events' => $events->where('status', 'pending')->count(),
+            'rejected_events' => $events->where('status', 'rejected')->count(),
+        ];
+
+        return view('pages.create_events.create_events', compact('events', 'categories', 'numberEvent', 'stats'));
     }
 
     function store(Request $request){
@@ -38,7 +57,7 @@ class CreateEventsController extends Controller
             $image->storeAs("public/img", $imageName);
         }
 
-        Events::create([
+        $event = Events::create([
             "title" => $request->title,
             "user_id" => Auth::user()->id,
             "description" => $request->description,
@@ -51,6 +70,33 @@ class CreateEventsController extends Controller
             "image" => $imageName,
             "status" => "pending" // All new events require admin approval
         ]);
+
+        // Send email notifications after successful event creation
+        try {
+            // Send confirmation email to organizer
+            Mail::to(Auth::user()->email)->send(new EventCreated($event));
+            Log::info('Event creation confirmation email sent to organizer', [
+                'event_id' => $event->id,
+                'organizer_email' => Auth::user()->email
+            ]);
+
+            // Send notification email to all admins
+            $adminUsers = User::role('admin')->get();
+            foreach ($adminUsers as $admin) {
+                Mail::to($admin->email)->send(new NewEventNotification($event));
+            }
+            Log::info('New event notification emails sent to admins', [
+                'event_id' => $event->id,
+                'admin_count' => $adminUsers->count()
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to send event creation emails', [
+                'event_id' => $event->id,
+                'error' => $e->getMessage()
+            ]);
+            // Don't fail event creation if email fails
+        }
 
         return redirect()->back()->with('success', 'Event created successfully! Your event is pending admin approval and will be visible to attendees once approved.');
     }

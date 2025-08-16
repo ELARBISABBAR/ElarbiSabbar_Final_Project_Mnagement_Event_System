@@ -1,4 +1,9 @@
-<div class="event-card group hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2">
+<div class="event-card group hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2"
+     data-title="{{ strtolower($event->title) }}"
+     data-description="{{ strtolower($event->description) }}"
+     data-location="{{ strtolower($event->location) }}"
+     data-category="{{ $event->category ? strtolower($event->category->name) : '' }}"
+     data-organizer="{{ strtolower($event->user->name) }}">
     <!-- Event Image -->
     <div class="relative overflow-hidden rounded-t-xl">
         @if($event->image && file_exists(public_path('storage/img/' . $event->image)))

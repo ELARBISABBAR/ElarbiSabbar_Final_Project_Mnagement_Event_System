@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TicketConfirmation;
+use App\Mail\SalesNotification;
 use App\Models\Events;
 use App\Models\Tickets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 
@@ -176,6 +179,20 @@ class StripeController extends Controller
 
                     if ($existingTicket) {
                         Log::info('Ticket already exists for session', ['ticket_id' => $existingTicket->id]);
+
+                        // Send emails for existing ticket if not already sent
+                        try {
+                            $transactionId = $session->payment_intent ?? $sessionId;
+                            Mail::to($existingTicket->user->email)->send(new TicketConfirmation($existingTicket, $transactionId));
+                            Mail::to($event->user->email)->send(new SalesNotification($existingTicket, $transactionId));
+                            Log::info('Confirmation emails sent for existing ticket', ['ticket_id' => $existingTicket->id]);
+                        } catch (\Exception $emailException) {
+                            Log::error('Failed to send emails for existing ticket', [
+                                'ticket_id' => $existingTicket->id,
+                                'error' => $emailException->getMessage()
+                            ]);
+                        }
+
                         return redirect()->route('ticket.confirmation', $existingTicket)
                             ->with('success', 'Payment successful! Your tickets have been confirmed.');
                     }
@@ -195,6 +212,33 @@ class StripeController extends Controller
                     ]);
 
                     Log::info('Ticket created successfully', ['ticket_id' => $ticket->id]);
+
+                    // Send confirmation emails after successful ticket creation
+                    try {
+                        // Get transaction ID from Stripe session
+                        $transactionId = $session->payment_intent ?? $sessionId;
+
+                        // Send ticket confirmation email to attendee
+                        Mail::to($ticket->user->email)->send(new TicketConfirmation($ticket, $transactionId));
+                        Log::info('Ticket confirmation email sent to attendee', [
+                            'ticket_id' => $ticket->id,
+                            'attendee_email' => $ticket->user->email
+                        ]);
+
+                        // Send sales notification email to organizer
+                        Mail::to($event->user->email)->send(new SalesNotification($ticket, $transactionId));
+                        Log::info('Sales notification email sent to organizer', [
+                            'ticket_id' => $ticket->id,
+                            'organizer_email' => $event->user->email
+                        ]);
+
+                    } catch (\Exception $emailException) {
+                        Log::error('Failed to send payment confirmation emails', [
+                            'ticket_id' => $ticket->id,
+                            'error' => $emailException->getMessage()
+                        ]);
+                        // Don't fail the payment process if email fails
+                    }
 
                     return redirect()->route('ticket.confirmation', $ticket)
                         ->with('success', 'Payment successful! Your tickets have been confirmed.');
