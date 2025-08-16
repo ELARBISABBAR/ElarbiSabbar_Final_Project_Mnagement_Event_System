@@ -43,21 +43,22 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'role' => $request->role,
-            // 'phone' => $request->phone,
-            // 'role' => $request->role,
         ]);
-        if ($request->role != "attendee") {
-            $user->assignRole($request->role);
-        }
+
+        // Assign role using Spatie Permission package
+        $user->assignRole($request->role);
         event(new Registered($user));
 
         Auth::login($user);
-        
+
+        // Redirect based on user role
         if ($user->hasRole("admin")) {
             return redirect()->route("event_admin.index");
-        }else if ($user->hasRole("editor")) {
-            return redirect()->route("event.post");
-        } 
+        } else if ($user->hasRole("organizer")) {
+            return redirect()->route("event.index");
+        } else if ($user->hasRole("editor")) {
+            return redirect()->route("event.index");
+        }
 
         return redirect(route('home', absolute: false));
     }

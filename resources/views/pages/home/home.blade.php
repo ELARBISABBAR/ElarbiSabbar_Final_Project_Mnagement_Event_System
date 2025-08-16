@@ -181,9 +181,6 @@
                         All <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-500">Events</span>
                     @endif
                 </h2>
-                <p class="text-xl text-secondary-600 max-w-3xl mx-auto leading-relaxed">
-                    Discover amazing events happening near you. From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
-                </p>
 
                 @if($events->total() > 0)
                     <div class="mt-8 inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm border border-secondary-200">

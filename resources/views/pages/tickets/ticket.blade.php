@@ -1,6 +1,93 @@
 @extends('layouts.index')
 
 @section('content')
+
+<style>
+/* Custom Modal Styles for Better Scrolling */
+#ticketModal {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#ticketModal .modal-container {
+    animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Simple modal styles */
+.modal-container {
+    max-height: 90vh;
+}
+
+/* Simple button hover effects */
+button:hover {
+    transition: all 0.2s ease;
+}
+
+/* Ensure proper scrolling on mobile */
+@media (max-height: 600px) {
+    #ticketModal .modal-container {
+        max-height: 95vh;
+        margin: 0.5rem auto;
+    }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+    #ticketModal .modal-container {
+        max-width: 95vw;
+        margin: 1rem auto;
+        max-height: 90vh;
+    }
+
+    #ticketModal .modal-content {
+        padding: 1rem;
+    }
+
+    #ticketModal .px-6 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Very small screens */
+@media (max-height: 500px) {
+    #ticketModal .modal-container {
+        max-height: 98vh;
+        margin: 0.25rem auto;
+    }
+}
+
+/* Custom scrollbar for modal content */
+#ticketModal .modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#ticketModal .modal-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+#ticketModal .modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+#ticketModal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+</style>
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
         <!-- Success/Error Messages -->
@@ -316,17 +403,21 @@
     @include('pages.tickets.components.reviews')
 </div>
 
-<!-- Ticket Purchase Modal -->
+<!-- Simple Purchase Tickets Modal -->
 @auth
 <div id="ticketModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white rounded-xl shadow-large max-w-md w-full">
-            <form action="{{ route('ticket.post') }}" method="POST" id="ticketForm">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <form action="{{ route('stripe.checkout', $event) }}" method="POST" id="ticketForm">
                 @csrf
-                <div class="px-6 py-4 border-b border-secondary-200">
+                <!-- Hidden fields for form functionality -->
+                <input type="hidden" name="ticketType" id="ticketType" value="standard">
+                <input type="hidden" name="selectedPrice" id="selectedPrice" value="{{ $event->price }}">
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold text-secondary-900">Purchase Tickets</h3>
-                        <button type="button" onclick="closeTicketModal()" class="text-secondary-400 hover:text-secondary-600">
+                        <h3 class="text-lg font-semibold text-gray-900">Purchase Tickets</h3>
+                        <button type="button" onclick="closeTicketModal()" class="text-gray-400 hover:text-gray-600">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -334,75 +425,77 @@
                     </div>
                 </div>
 
-                <div class="px-6 py-4 space-y-4">
+                <!-- Content -->
+                <div class="p-6">
+                    <!-- Error Display -->
+                    @if(session('error'))
+                        <div class="mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p class="text-sm text-red-600">{{ session('error') }}</p>
+                        </div>
+                    @endif
+
                     <!-- Event Info -->
-                    <div class="bg-secondary-50 rounded-lg p-4">
-                        <h4 class="font-medium text-secondary-900">{{ $event->title }}</h4>
-                        <p class="text-sm text-secondary-600">{{ $event->date_start->format('M j, Y \a\t g:i A') }}</p>
-                        <p class="text-sm text-secondary-600">{{ $event->location }}</p>
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-900 mb-3">{{ $event->title }}</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <p>📅 {{ $event->date_start->format('M j, Y \a\t g:i A') }}</p>
+                            <p>📍 {{ $event->location }}</p>
+                        </div>
                     </div>
 
-                    <!-- Ticket Type Selection -->
-                    <div>
-                        <label class="form-label">Ticket Type *</label>
-                        <select name="ticket_type" id="ticketType" required class="form-input" onchange="updatePrice()">
-                            <option value="">Select ticket type</option>
-                            <option value="standard" data-price="{{ $event->price }}">Standard - ${{ number_format($event->price, 2) }}</option>
-                            <option value="vip" data-price="{{ $event->price * 1.5 }}">VIP - ${{ number_format($event->price * 1.5, 2) }}</option>
-                            <option value="student" data-price="{{ $event->price * 0.6 }}">Student - ${{ number_format($event->price * 0.6, 2) }}</option>
-                        </select>
-                        @error('ticket_type')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <!-- Price and Quantity -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-gray-700">Ticket Price:</span>
+                            <span class="text-xl font-bold text-blue-600">${{ number_format($event->price, 2) }}</span>
+                        </div>
 
-                    <!-- Quantity -->
-                    <div>
-                        <label class="form-label">Quantity *</label>
-                        <div class="flex items-center space-x-3">
-                            <button type="button" onclick="decreaseQuantity()" class="btn-outline-secondary w-10 h-10 flex items-center justify-center">-</button>
-                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" required class="form-input text-center flex-1" onchange="updateTotal()">
-                            <button type="button" onclick="increaseQuantity()" class="btn-outline-secondary w-10 h-10 flex items-center justify-center">+</button>
-                        </div>
-                        @error('quantity')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Price Summary -->
-                    <div class="bg-secondary-50 rounded-lg p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-secondary-600">Price per ticket:</span>
-                            <span id="pricePerTicket" class="font-medium">$0.00</span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-secondary-600">Quantity:</span>
-                            <span id="quantityDisplay" class="font-medium">1</span>
-                        </div>
-                        <div class="border-t border-secondary-200 pt-2">
-                            <div class="flex justify-between items-center">
-                                <span class="font-semibold text-secondary-900">Total:</span>
-                                <span id="totalPrice" class="font-bold text-primary-600 text-lg">$0.00</span>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-gray-700">Quantity:</span>
+                            <div class="flex items-center space-x-3">
+                                <button type="button" onclick="decreaseQuantity()" class="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                    </svg>
+                                </button>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1" max="10" required
+                                       class="w-16 text-center border border-gray-300 rounded px-2 py-1" onchange="updateTotal()" oninput="updateTotal()" readonly>
+                                <button type="button" onclick="increaseQuantity()" class="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
+
+                        @error('quantity')
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <!-- Hidden Fields -->
-                    <input type="hidden" name="eventId" value="{{ $event->id }}">
-                    <input type="hidden" name="price" id="selectedPrice" value="">
+                    <!-- Total -->
+                    <div class="border-t border-gray-200 pt-4 mb-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-semibold text-gray-900">Total:</span>
+                            <span id="totalPrice" class="text-2xl font-bold text-blue-600">${{ number_format($event->price, 2) }}</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="px-6 py-4 border-t border-secondary-200 flex justify-end space-x-3">
-                    <button type="button" onclick="closeTicketModal()" class="btn-outline-secondary" id="cancelBtn">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn-primary" id="purchaseBtn">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="purchaseIcon">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                        </svg>
-                        <span id="purchaseText">Purchase Tickets</span>
-                        <div class="hidden animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2" id="loadingSpinner"></div>
-                    </button>
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm text-gray-500">🔒 Secured by Stripe</p>
+                        <div class="flex space-x-3">
+                            <button type="button" onclick="closeTicketModal()" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg" id="purchaseBtn">
+                                <span id="purchaseText">Pay Now</span>
+                                <div class="hidden animate-spin rounded-full h-4 w-4 border-b-2 border-white ml-2" id="loadingSpinner"></div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -418,6 +511,17 @@
         if (modal) {
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            document.body.style.paddingRight = getScrollbarWidth() + 'px'; // Prevent layout shift
+
+            // Initialize the total calculation
+            updateTotal();
+
+            // Focus trap for accessibility
+            const firstFocusable = modal.querySelector('button, input, select, textarea');
+            if (firstFocusable) {
+                setTimeout(() => firstFocusable.focus(), 100);
+            }
+
             console.log('Modal opened successfully');
         } else {
             console.error('Modal element not found!');
@@ -429,52 +533,173 @@
         const modal = document.getElementById('ticketModal');
         if (modal) {
             modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
             console.log('Modal closed successfully');
         } else {
             console.error('Modal element not found!');
         }
     }
 
+    // Helper function to get scrollbar width
+    function getScrollbarWidth() {
+        const outer = document.createElement('div');
+        outer.style.visibility = 'hidden';
+        outer.style.overflow = 'scroll';
+        outer.style.msOverflowStyle = 'scrollbar';
+        document.body.appendChild(outer);
+
+        const inner = document.createElement('div');
+        outer.appendChild(inner);
+
+        const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+        outer.parentNode.removeChild(outer);
+
+        return scrollbarWidth;
+    }
+
+    // Debug function to check elements
+    function debugElements() {
+        const elements = {
+            modal: document.getElementById('ticketModal'),
+            form: document.getElementById('ticketForm'),
+            quantity: document.getElementById('quantity'),
+            quantityDisplay: document.getElementById('quantityDisplay'),
+            totalPrice: document.getElementById('totalPrice'),
+            purchaseBtn: document.getElementById('purchaseBtn')
+        };
+
+        console.log('Modal elements check:', elements);
+
+        Object.keys(elements).forEach(key => {
+            if (!elements[key]) {
+                console.error(`Element not found: ${key}`);
+            }
+        });
+    }
+
+    // Enhanced modal event handling
+    document.addEventListener('DOMContentLoaded', function() {
+        // Debug elements on page load
+        debugElements();
+
+        const modal = document.getElementById('ticketModal');
+        const form = document.getElementById('ticketForm');
+        const purchaseBtn = document.getElementById('purchaseBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const purchaseText = document.getElementById('purchaseText');
+
+        if (modal) {
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeTicketModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeTicketModal();
+                }
+            });
+        }
+
+        // Enhanced form submission with loading state
+        if (form && purchaseBtn) {
+            form.addEventListener('submit', function(e) {
+                // Validate quantity
+                const quantity = parseInt(document.getElementById('quantity').value);
+                if (!quantity || quantity < 1 || quantity > 10) {
+                    e.preventDefault();
+                    alert('Please select a valid quantity (1-10 tickets)');
+                    return false;
+                }
+
+                console.log('Form submitting with quantity:', quantity);
+
+                // Show loading state
+                purchaseBtn.disabled = true;
+                purchaseBtn.classList.add('opacity-75', 'cursor-not-allowed');
+                if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+                if (purchaseText) purchaseText.textContent = 'Processing...';
+
+                // Add a small delay to show the loading state
+                setTimeout(() => {
+                    // Form will submit naturally after this
+                }, 300);
+            });
+        }
+
+        // Auto-hide error messages after 10 seconds
+        const errorAlert = document.querySelector('.bg-red-50');
+        if (errorAlert) {
+            setTimeout(() => {
+                errorAlert.style.transition = 'opacity 0.5s ease-out';
+                errorAlert.style.opacity = '0';
+                setTimeout(() => {
+                    errorAlert.remove();
+                }, 500);
+            }, 10000);
+        }
+    });
+
     // Quantity functions
     function increaseQuantity() {
+        console.log('Increase quantity clicked');
         const quantityInput = document.getElementById('quantity');
-        const currentValue = parseInt(quantityInput.value);
+        const currentValue = parseInt(quantityInput.value) || 1;
         if (currentValue < 10) {
             quantityInput.value = currentValue + 1;
             updateTotal();
+            console.log('Quantity increased to:', quantityInput.value);
+        } else {
+            console.log('Maximum quantity reached');
         }
     }
 
     function decreaseQuantity() {
+        console.log('Decrease quantity clicked');
         const quantityInput = document.getElementById('quantity');
-        const currentValue = parseInt(quantityInput.value);
+        const currentValue = parseInt(quantityInput.value) || 1;
         if (currentValue > 1) {
             quantityInput.value = currentValue - 1;
             updateTotal();
+            console.log('Quantity decreased to:', quantityInput.value);
+        } else {
+            console.log('Minimum quantity reached');
         }
     }
 
     // Price calculation functions
-    function updatePrice() {
-        const ticketTypeSelect = document.getElementById('ticketType');
-        const selectedOption = ticketTypeSelect.options[ticketTypeSelect.selectedIndex];
-        const price = selectedOption.getAttribute('data-price');
 
-        if (price) {
-            document.getElementById('selectedPrice').value = price;
-            document.getElementById('pricePerTicket').textContent = '$' + parseFloat(price).toFixed(2);
-            updateTotal();
-        }
-    }
 
     function updateTotal() {
-        const price = parseFloat(document.getElementById('selectedPrice').value) || 0;
+        const basePrice = {{ $event->price }}; // Get the base price from Laravel
         const quantity = parseInt(document.getElementById('quantity').value) || 1;
-        const total = price * quantity;
+        const total = basePrice * quantity;
 
-        document.getElementById('quantityDisplay').textContent = quantity;
-        document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
+        // Update the total price display with animation
+        const totalPriceElement = document.getElementById('totalPrice');
+        if (totalPriceElement) {
+            // Add a brief highlight effect to show the price changed
+            totalPriceElement.style.transition = 'color 0.3s ease';
+            totalPriceElement.style.color = '#059669'; // Green color
+            totalPriceElement.textContent = '$' + total.toFixed(2);
+
+            // Reset color after animation
+            setTimeout(() => {
+                totalPriceElement.style.color = '#2563eb'; // Back to blue
+            }, 300);
+        }
+
+        // Update the hidden selectedPrice field for form submission
+        const selectedPriceElement = document.getElementById('selectedPrice');
+        if (selectedPriceElement) {
+            selectedPriceElement.value = total.toFixed(2);
+        }
+
+        console.log('Price updated:', { basePrice, quantity, total }); // Debug log
     }
 
     // Share function

@@ -15,13 +15,19 @@ class Tickets extends Model
         "ticket_type",
         "price",
         "quantity",
+        "total_amount",
         "pdf",
         "is_paid",
+        "payment_method",
+        "stripe_session_id",
+        "purchased_at",
     ];
 
     protected $casts = [
         'is_paid' => 'boolean',
         'price' => 'decimal:2',
+        'total_amount' => 'decimal:2',
+        'purchased_at' => 'datetime',
     ];
 
     public function user(){

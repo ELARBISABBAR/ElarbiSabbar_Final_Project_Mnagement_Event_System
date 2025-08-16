@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
@@ -15,30 +13,25 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // Create roles using Spatie Permission
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'organizer', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'editor', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'attendee', 'guard_name' => 'web']);
 
-        DB::table('roles')->insert([
+        // Create admin user with specified credentials
+        $admin = \App\Models\User::updateOrCreate(
+            ['email' => 'larbisbbar1234@gmail.com'],
             [
-                "name" => "admin",
-                "guard_name" => "web"
-            ],
-            [
-                "name" => "organizer",
-                "guard_name" => "web"
-            ],
-        ]);
+                'name' => 'Admin User',
+                'email' => 'larbisbbar1234@gmail.com',
+                'password' => bcrypt('Lwalida1981@'),
+                'phone' => '1234567890',
+                'role' => 'admin'
+            ]
+        );
 
-        DB::table('model_has_roles')->insert([
-            [
-                'role_id' => 1,
-                'model_type' => "App\Models\User",
-                'model_id'=> 1
-            ],
-            [
-                'role_id' => 2,
-                'model_type' => "App\Models\User",
-                'model_id'=> 2
-            ],
-        ]);
+        // Assign admin role
+        $admin->assignRole('admin');
     }
 }

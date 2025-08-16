@@ -140,6 +140,10 @@
                                 </th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
+                                    Category
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
                                     Tickets Sold
                                 </th>
                                 <th
@@ -200,6 +204,25 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-secondary-900">
                                             ${{ number_format($event->price, 2) }}</div>
+                                    </td>
+
+                                    <!-- Category -->
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <span class="text-sm font-medium text-secondary-900">
+                                                @if($event->category)
+                                                    @if($event->category->name == 'Conference') 🎤
+                                                    @elseif($event->category->name == 'Workshop') 🛠️
+                                                    @elseif($event->category->name == 'Networking') 🤝
+                                                    @elseif($event->category->name == 'Entertainment') 🎉
+                                                    @else 📅
+                                                    @endif
+                                                    {{ $event->category->name }}
+                                                @else
+                                                    <span class="text-gray-400">No category</span>
+                                                @endif
+                                            </span>
+                                        </div>
                                     </td>
 
                                     <!-- Tickets Sold -->
@@ -374,7 +397,7 @@
                     <!-- Event Title -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Title</label>
-                        <input type="text" name="title" required
+                        <input type="text" name="title" id="create_title" required
                             class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base"
                             placeholder="insert event title">
                         @error('title')
@@ -385,7 +408,7 @@
                     <!-- Event Description -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Description</label>
-                        <textarea name="description" required rows="4"
+                        <textarea name="description" id="create_description" required rows="4"
                             class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 resize-none text-base"
                             placeholder="add description ..."></textarea>
                         @error('description')
@@ -397,32 +420,16 @@
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">start date</label>
-                            <div class="relative">
-                                <input type="datetime-local" name="date_start" required
-                                    class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
-                                <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </div>
+                            <input type="datetime-local" name="date_start" id="create_date_start" required
+                                class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
                             @error('date_start')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">end date</label>
-                            <div class="relative">
-                                <input type="datetime-local" name="date_end" required
-                                    class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
-                                <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                            </div>
+                            <input type="datetime-local" name="date_end" id="create_date_end" required
+                                class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
                             @error('date_end')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -433,7 +440,7 @@
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">Price</label>
-                            <input type="number" name="price" required step="0.01" min="0"
+                            <input type="number" name="price" id="create_price" required step="0.01" min="0"
                                 class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base"
                                 placeholder="Price">
                             @error('price')
@@ -442,7 +449,7 @@
                         </div>
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">location</label>
-                            <input type="text" name="location" required
+                            <input type="text" name="location" id="create_location" required
                                 class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base"
                                 placeholder="location">
                             @error('location')
@@ -454,7 +461,7 @@
                     <!-- Event Visibility -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Event Visibility</label>
-                        <select name="visibility" required
+                        <select name="visibility" id="create_visibility" required
                             class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
                             <option value="public">🌍 Public - Visible to everyone</option>
                             <option value="private">🔒 Private - Only logged-in users</option>
@@ -486,8 +493,28 @@
                         @enderror
                     </div>
 
-                    <!-- Event Category (Hidden for now, but still functional) -->
-                    <input type="hidden" name="category_id" value="1">
+                    <!-- Event Category -->
+                    <div>
+                        <label class="block text-base font-normal text-gray-700 mb-3">Event Category *</label>
+                        <select name="category_id" id="create_category_id" required
+                            class="w-full px-4 py-4 border-2 border-black rounded-2xl focus:border-black focus:outline-none transition-colors text-gray-700 text-base">
+                            <option value="">🏷️ Select a category...</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    @if($category->name == 'Conference') 🎤
+                                    @elseif($category->name == 'Workshop') 🛠️
+                                    @elseif($category->name == 'Networking') 🤝
+                                    @elseif($category->name == 'Entertainment') 🎉
+                                    @else 📅
+                                    @endif
+                                    {{ $category->name }} - {{ $category->description }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="px-8 py-6">
@@ -534,16 +561,7 @@
                             <textarea name="description" id="edit_description" required rows="4" class="form-input"></textarea>
                         </div>
 
-                        <!-- Event Category -->
-                        <div>
-                            <label class="form-label">Category *</label>
-                            <select name="category_id" id="edit_category_id" required class="form-input">
-                                <option value="">Select a category</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
 
                         <!-- Date and Time -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -582,6 +600,25 @@
                             </select>
                         </div>
 
+                        <!-- Event Category -->
+                        <div>
+                            <label class="form-label">Event Category *</label>
+                            <select name="category_id" id="edit_category_id" required class="form-input">
+                                <option value="">🏷️ Select a category...</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">
+                                        @if($category->name == 'Conference') 🎤
+                                        @elseif($category->name == 'Workshop') 🛠️
+                                        @elseif($category->name == 'Networking') 🤝
+                                        @elseif($category->name == 'Entertainment') 🎉
+                                        @else 📅
+                                        @endif
+                                        {{ $category->name }} - {{ $category->description }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Event Image -->
                         <div>
                             <label class="form-label">Event Image</label>
@@ -608,6 +645,16 @@
         function openEventModal() {
             const modal = document.getElementById('eventModal');
             if (modal) {
+                // Clear the form when opening to prevent conflicts
+                document.getElementById('create_title').value = '';
+                document.getElementById('create_description').value = '';
+                document.getElementById('create_date_start').value = '';
+                document.getElementById('create_date_end').value = '';
+                document.getElementById('create_price').value = '';
+                document.getElementById('create_location').value = '';
+                document.getElementById('create_visibility').value = 'public';
+                document.getElementById('create_category_id').value = '';
+
                 modal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
@@ -672,6 +719,7 @@
                     document.getElementById('edit_location').value = event.location;
                     document.getElementById('edit_price').value = event.price;
                     document.getElementById('edit_visibility').value = event.visibility;
+                    document.getElementById('edit_category_id').value = event.category_id;
 
                     document.getElementById('editEventForm').action = `/event/${eventId}`;
                     openEditModal();
@@ -828,9 +876,9 @@
                             return `${year}-${month}-${day}T${hours}:${minutes}`;
                         };
 
-                        // Set the form values
-                        const startInput = document.querySelector('input[name="date_start"]');
-                        const endInput = document.querySelector('input[name="date_end"]');
+                        // Set the form values - target the create modal specifically
+                        const startInput = document.getElementById('create_date_start');
+                        const endInput = document.getElementById('create_date_end');
 
                         if (startInput && endInput) {
                             startInput.value = formatForInput(startDate);

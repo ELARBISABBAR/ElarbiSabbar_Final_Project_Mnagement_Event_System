@@ -9,6 +9,7 @@ use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TicketConfirmationController;
 use App\Http\Controllers\TicketsController;
 use App\Mail\ContactMailer;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/events/{event}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // ^^ Stripe Payment routes :
+    Route::post('/stripe/checkout/{event}', [StripeController::class, 'createCheckoutSession'])->name('stripe.checkout');
+    Route::get('/stripe/success', [StripeController::class, 'handleSuccess'])->name('stripe.success');
+    Route::get('/stripe/cancel', [StripeController::class, 'handleCancel'])->name('stripe.cancel');
+    Route::get('/stripe/test', [StripeController::class, 'testStripe'])->name('stripe.test'); // Test route
+
+    // ^^ Ticket Confirmation routes :
+    Route::get('/ticket/confirmation/{ticket}', [TicketConfirmationController::class, 'show'])->name('ticket.confirmation');
 });
 
 require __DIR__ . '/auth.php';
