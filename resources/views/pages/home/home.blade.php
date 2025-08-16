@@ -103,59 +103,91 @@
                         </svg>
                     </button>
 
-                    <div x-show="showFilters" x-transition class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Price Range -->
-                        <div>
-                            <label class="form-label">Min Price</label>
-                            <input
-                                type="number"
-                                name="min_price"
-                                value="{{ request('min_price') }}"
-                                placeholder="0"
-                                class="form-input"
-                                min="0"
-                                step="0.01"
-                            >
+                    <div x-show="showFilters" x-transition class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Price Range -->
+                            <div>
+                                <label class="form-label">Min Price</label>
+                                <input
+                                    type="number"
+                                    name="min_price"
+                                    value="{{ request('min_price') }}"
+                                    placeholder="0"
+                                    class="form-input"
+                                    min="0"
+                                    step="0.01"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="form-label">Max Price</label>
+                                <input
+                                    type="number"
+                                    name="max_price"
+                                    value="{{ request('max_price') }}"
+                                    placeholder="1000"
+                                    class="form-input"
+                                    min="0"
+                                    step="0.01"
+                                >
+                            </div>
+
+                            <!-- Date Range -->
+                            <div>
+                                <label class="form-label">From Date</label>
+                                <input
+                                    type="date"
+                                    name="date_from"
+                                    value="{{ request('date_from') }}"
+                                    class="form-input"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="form-label">To Date</label>
+                                <input
+                                    type="date"
+                                    name="date_to"
+                                    value="{{ request('date_to') }}"
+                                    class="form-input"
+                                >
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="form-label">Max Price</label>
-                            <input
-                                type="number"
-                                name="max_price"
-                                value="{{ request('max_price') }}"
-                                placeholder="1000"
-                                class="form-input"
-                                min="0"
-                                step="0.01"
-                            >
-                        </div>
+                        <!-- Additional Options -->
+                        <div class="flex items-center space-x-6">
+                            <label class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    name="show_past"
+                                    value="1"
+                                    {{ request('show_past') ? 'checked' : '' }}
+                                    class="form-checkbox h-4 w-4 text-primary-600 focus:ring-primary-500 border-secondary-300 rounded"
+                                >
+                                <span class="ml-2 text-sm text-secondary-700">Include past events</span>
+                            </label>
 
-                        <!-- Date Range -->
-                        <div>
-                            <label class="form-label">From Date</label>
-                            <input
-                                type="date"
-                                name="date_from"
-                                value="{{ request('date_from') }}"
-                                class="form-input"
-                            >
-                        </div>
-
-                        <div>
-                            <label class="form-label">To Date</label>
-                            <input
-                                type="date"
-                                name="date_to"
-                                value="{{ request('date_to') }}"
-                                class="form-input"
-                            >
+                            @auth
+                            <div class="text-xs text-secondary-500">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                You can see private and members-only events
+                            </div>
+                            @else
+                            <div class="text-xs text-secondary-500">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <a href="{{ route('login') }}" class="text-primary-600 hover:text-primary-700">Log in</a> to see more events
+                            </div>
+                            @endauth
                         </div>
                     </div>
                 </div>
 
                 <!-- Clear Filters -->
-                @if(request()->hasAny(['search', 'location', 'min_price', 'max_price', 'date_from', 'date_to']))
+                @if(request()->hasAny(['search', 'location', 'min_price', 'max_price', 'date_from', 'date_to', 'show_past']))
                     <div class="flex justify-end">
                         <a href="{{ route('home') }}" class="btn-outline-secondary">
                             Clear All Filters

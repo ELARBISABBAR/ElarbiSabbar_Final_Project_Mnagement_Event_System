@@ -95,9 +95,9 @@ class Events extends Model
             return $query->where('visibility', 'public');
         }
 
-        // Logged-in users can see public and private events
-        // For members_only, you might want to add additional logic
-        return $query->whereIn('visibility', ['public', 'private']);
+        // Logged-in users can see public, private, and members_only events
+        // All authenticated users are considered "members"
+        return $query->whereIn('visibility', ['public', 'private', 'members_only']);
     }
 
     // Helper methods for visibility

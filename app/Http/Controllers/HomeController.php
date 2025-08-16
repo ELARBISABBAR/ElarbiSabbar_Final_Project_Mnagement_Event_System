@@ -14,8 +14,12 @@ class HomeController extends Controller
         $query = Events::with(['user', 'tickets', 'category', 'reviews'])
             ->approved() // Only show approved events
             ->visibleTo(Auth::user()) // Filter by visibility based on user authentication
-            ->where('date_start', '>=', now())
             ->orderBy('date_start', 'asc');
+
+        // By default, show only future events, but allow showing past events with a parameter
+        if (!$request->has('show_past') || !$request->show_past) {
+            $query->where('date_start', '>=', now());
+        }
 
         // Search functionality
         if ($request->has('search') && $request->search) {
@@ -58,9 +62,14 @@ class HomeController extends Controller
         $events = $query->paginate(12);
 
         // Get unique locations for filter dropdown (only from approved and visible events)
-        $locations = Events::approved()
-            ->visibleTo(Auth::user())
-            ->where('date_start', '>=', now())
+        $locationQuery = Events::approved()->visibleTo(Auth::user());
+
+        // Apply same date filter as main query
+        if (!$request->has('show_past') || !$request->show_past) {
+            $locationQuery->where('date_start', '>=', now());
+        }
+
+        $locations = $locationQuery
             ->distinct()
             ->pluck('location')
             ->map(function($location) {
