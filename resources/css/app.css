@@ -306,6 +306,43 @@
         }
     }
 
+    /* Dropdown and Modal Text Handling */
+    .dropdown-email-text {
+        word-break: break-all;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.4;
+        max-width: 100%;
+    }
+
+    .dropdown-name-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+    }
+
+    /* Enhanced Modal Content */
+    .modal-content-enhanced {
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* Responsive Dropdown Improvements */
+    @media (max-width: 640px) {
+        .dropdown-email-text {
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .dropdown-name-text {
+            font-size: 0.875rem;
+        }
+    }
+
     /* Professional Logo Styles */
     .logo-container {
         @apply flex items-center space-x-3;

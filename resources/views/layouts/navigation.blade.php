@@ -38,7 +38,7 @@
             <!-- User Menu -->
             <div class="hidden md:flex items-center space-x-4">
                 @auth
-                    <x-dropdown align="right" width="48">
+                    <x-dropdown align="right" width="64">
                         <x-slot name="trigger">
                             <button class="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-secondary-700 hover:bg-secondary-100 transition-colors duration-200">
                                 <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
@@ -53,9 +53,13 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <div class="px-4 py-2 border-b border-secondary-200">
-                                <p class="text-sm font-medium text-secondary-900">{{ Auth::user()->name }}</p>
-                                <p class="text-sm text-secondary-500">{{ Auth::user()->email }}</p>
+                            <div class="px-4 py-3 border-b border-secondary-200">
+                                <p class="text-sm font-medium text-secondary-900 dropdown-name-text" title="{{ Auth::user()->name }}">
+                                    {{ Auth::user()->name }}
+                                </p>
+                                <p class="text-xs text-secondary-500 dropdown-email-text" title="{{ Auth::user()->email }}">
+                                    {{ Auth::user()->email }}
+                                </p>
                             </div>
 
                             <x-dropdown-link :href="route('myorder.index')" class="flex items-center space-x-2">
@@ -72,7 +76,7 @@
                                 <span>Profile</span>
                             </x-dropdown-link>
 
-                            @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
+                            @if (Auth::user()->role === 'organizer')
                                 <div class="border-t border-secondary-200 my-1"></div>
                                 <x-dropdown-link :href="route('event.index')" class="flex items-center space-x-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,21 +84,22 @@
                                     </svg>
                                     <span>Create Event</span>
                                 </x-dropdown-link>
+                            @endif
 
-                                @if (Auth::user()->role === 'admin')
-                                    <x-dropdown-link :href="route('users.index')" class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-                                        </svg>
-                                        <span>Manage Users</span>
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('event_admin.index')" class="flex items-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
-                                        <span>Manage Events</span>
-                                    </x-dropdown-link>
-                                @endif
+                            @if (Auth::user()->role === 'admin')
+                                <div class="border-t border-secondary-200 my-1"></div>
+                                <x-dropdown-link :href="route('users.index')" class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                    </svg>
+                                    <span>Manage Users</span>
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('event_admin.index')" class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>Manage Events</span>
+                                </x-dropdown-link>
                             @endif
 
                             <div class="border-t border-secondary-200 my-1"></div>
@@ -165,13 +170,17 @@
 
         @auth
             <div class="border-t border-secondary-200 px-4 py-3">
-                <div class="flex items-center space-x-3 mb-3">
-                    <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center">
+                <div class="flex items-start space-x-3 mb-3">
+                    <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
                         <span class="text-white font-semibold">{{ substr(Auth::user()->name, 0, 1) }}</span>
                     </div>
-                    <div>
-                        <p class="text-sm font-medium text-secondary-900">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-secondary-500">{{ Auth::user()->email }}</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-secondary-900 dropdown-name-text" title="{{ Auth::user()->name }}">
+                            {{ Auth::user()->name }}
+                        </p>
+                        <p class="text-xs text-secondary-500 dropdown-email-text" title="{{ Auth::user()->email }}">
+                            {{ Auth::user()->email }}
+                        </p>
                     </div>
                 </div>
 
@@ -183,20 +192,21 @@
                         Profile
                     </a>
 
-                    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'organizer')
+                    @if (Auth::user()->role === 'organizer')
                         <div class="border-t border-secondary-200 my-2"></div>
                         <a href="{{ route('event.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
                             Create Event
                         </a>
+                    @endif
 
-                        @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
-                                Manage Users
-                            </a>
-                            <a href="{{ route('event_admin.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
-                                Manage Events
-                            </a>
-                        @endif
+                    @if (Auth::user()->role === 'admin')
+                        <div class="border-t border-secondary-200 my-2"></div>
+                        <a href="{{ route('users.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                            Manage Users
+                        </a>
+                        <a href="{{ route('event_admin.index') }}" class="block px-3 py-2 rounded-lg text-sm text-secondary-600 hover:bg-secondary-100">
+                            Manage Events
+                        </a>
                     @endif
 
                     <div class="border-t border-secondary-200 my-2"></div>
