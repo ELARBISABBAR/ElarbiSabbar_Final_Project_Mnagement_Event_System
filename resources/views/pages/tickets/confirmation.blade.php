@@ -111,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- Partnership Section -->
             <div class="bg-white rounded-xl shadow-soft p-6 mt-6">
                 <div class="text-center mb-6">
                     <h3 class="text-lg font-semibold text-secondary-900 mb-2">Our Trusted Partners</h3>
@@ -119,7 +118,6 @@
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-items-center">
-                    <!-- Adidas -->
                     <a href="https://www.adidas.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png"
@@ -132,7 +130,6 @@
                         </div>
                     </a>
 
-                    <!-- Chanel -->
                     <a href="https://www.chanel.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-pink-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Chanel-Logo.png"
@@ -145,7 +142,6 @@
                         </div>
                     </a>
 
-                    <!-- Nike -->
                     <a href="https://www.nike.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-orange-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png"
@@ -158,7 +154,6 @@
                         </div>
                     </a>
 
-                    <!-- Toyota -->
                     <a href="https://www.toyota.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-red-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png"
@@ -171,7 +166,6 @@
                         </div>
                     </a>
 
-                    <!-- Microsoft (replacing GS1) -->
                     <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-green-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/06/Microsoft-Logo.png"
@@ -184,7 +178,6 @@
                         </div>
                     </a>
 
-                    <!-- Apple (replacing BlackBerry) -->
                     <a href="https://www.apple.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Apple-Logo.png"
@@ -197,7 +190,6 @@
                         </div>
                     </a>
 
-                    <!-- BMW (replacing Mini) -->
                     <a href="https://www.bmw.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-yellow-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/BMW-Logo.png"
@@ -210,7 +202,6 @@
                         </div>
                     </a>
 
-                    <!-- Honda -->
                     <a href="https://www.honda.com" target="_blank" rel="noopener noreferrer"
                        class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-indigo-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
                         <img src="https://logos-world.net/wp-content/uploads/2020/04/Honda-Logo.png"
