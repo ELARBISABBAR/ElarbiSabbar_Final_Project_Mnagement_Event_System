@@ -3,7 +3,6 @@
 @section('content')
 
 <style>
-/* Custom Modal Styles for Better Scrolling */
 #ticketModal {
     backdrop-filter: blur(8px);
     background: rgba(0, 0, 0, 0.6);
@@ -25,17 +24,14 @@
     }
 }
 
-/* Simple modal styles */
 .modal-container {
     max-height: 90vh;
 }
 
-/* Simple button hover effects */
 button:hover {
     transition: all 0.2s ease;
 }
 
-/* Ensure proper scrolling on mobile */
 @media (max-height: 600px) {
     #ticketModal .modal-container {
         max-height: 95vh;
@@ -43,7 +39,6 @@ button:hover {
     }
 }
 
-/* Mobile-specific improvements */
 @media (max-width: 640px) {
     #ticketModal .modal-container {
         max-width: 95vw;
@@ -61,7 +56,6 @@ button:hover {
     }
 }
 
-/* Very small screens */
 @media (max-height: 500px) {
     #ticketModal .modal-container {
         max-height: 98vh;
@@ -69,7 +63,6 @@ button:hover {
     }
 }
 
-/* Custom scrollbar for modal content */
 #ticketModal .modal-content::-webkit-scrollbar {
     width: 6px;
 }
@@ -90,7 +83,6 @@ button:hover {
 </style>
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
-        <!-- Success/Error Messages -->
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6" role="alert">
                 <div class="flex">
@@ -139,7 +131,6 @@ button:hover {
             </div>
         @endif
 
-        <!-- Breadcrumb -->
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
@@ -161,10 +152,8 @@ button:hover {
             </ol>
         </nav>
 
-        <!-- Event Header -->
         <div class="bg-white rounded-xl shadow-soft overflow-hidden mb-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Event Image -->
                 <div class="relative">
                     @if($event->image && file_exists(public_path('storage/img/' . $event->image)))
                         <img
@@ -180,7 +169,6 @@ button:hover {
                         </div>
                     @endif
 
-                    <!-- Event Status Badge -->
                     <div class="absolute top-4 left-4">
                         @if($event->date_start->isPast())
                             <span class="badge-secondary">Event Ended</span>
@@ -192,13 +180,10 @@ button:hover {
                     </div>
                 </div>
 
-                <!-- Event Details -->
                 <div class="p-6 lg:p-8">
                     <h1 class="text-3xl lg:text-4xl font-bold text-secondary-900 mb-4">{{ $event->title }}</h1>
 
-                    <!-- Event Meta -->
                     <div class="space-y-4 mb-6">
-                        <!-- Date & Time -->
                         <div class="flex items-center text-secondary-600">
                             <svg class="w-5 h-5 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -209,7 +194,6 @@ button:hover {
                             </div>
                         </div>
 
-                        <!-- Location -->
                         <div class="flex items-center text-secondary-600">
                             <svg class="w-5 h-5 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -218,7 +202,6 @@ button:hover {
                             <p>{{ $event->location }}</p>
                         </div>
 
-                        <!-- Organizer -->
                         <div class="flex items-center text-secondary-600">
                             <svg class="w-5 h-5 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -227,13 +210,11 @@ button:hover {
                         </div>
                     </div>
 
-                    <!-- Price -->
                     <div class="mb-6">
                         <p class="text-sm text-secondary-600 mb-1">Starting from</p>
                         <p class="text-3xl font-bold text-primary-600">${{ number_format($event->price, 2) }}</p>
                     </div>
 
-                    <!-- Quick Actions -->
                     <div class="flex flex-col sm:flex-row gap-3">
                         @auth
                             @if(!$event->date_start->isPast())
@@ -265,9 +246,7 @@ button:hover {
             </div>
         </div>
 
-        <!-- Event Description -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content -->
             <div class="lg:col-span-2">
                 <div class="card">
                     <div class="card-header">
@@ -280,7 +259,6 @@ button:hover {
                     </div>
                 </div>
 
-                <!-- Event Stats -->
                 <div class="card mt-6">
                     <div class="card-header">
                         <h3 class="text-lg font-semibold text-secondary-900">Event Statistics</h3>
@@ -319,15 +297,12 @@ button:hover {
                 </div>
             </div>
 
-            <!-- Sidebar -->
             <div class="lg:col-span-1">
-                <!-- Ticket Info Card -->
                 <div class="card sticky top-8">
                     <div class="card-header">
                         <h3 class="text-lg font-semibold text-secondary-900">Ticket Information</h3>
                     </div>
                     <div class="card-body space-y-4">
-                        <!-- Ticket Types -->
                         <div>
                             <h4 class="font-medium text-secondary-900 mb-2">Available Ticket Types</h4>
                             <div class="space-y-2">
@@ -357,7 +332,6 @@ button:hover {
                             </div>
                         </div>
 
-                        <!-- Purchase Button -->
                         @auth
                             @if(!$event->date_start->isPast())
                                 <button onclick="openTicketModal()" class="btn-primary w-full">
@@ -373,7 +347,6 @@ button:hover {
                             </a>
                         @endauth
 
-                        <!-- Event Details -->
                         <div class="pt-4 border-t border-secondary-200">
                             <h4 class="font-medium text-secondary-900 mb-3">Event Details</h4>
                             <div class="space-y-2 text-sm">
@@ -398,22 +371,18 @@ button:hover {
     </div>
 </div>
 
-<!-- Reviews Section -->
 <div class="container-custom mb-8">
     @include('pages.tickets.components.reviews')
 </div>
 
-<!-- Simple Purchase Tickets Modal -->
 @auth
 <div id="ticketModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
             <form action="{{ route('stripe.checkout', $event) }}" method="POST" id="ticketForm">
                 @csrf
-                <!-- Hidden fields for form functionality -->
                 <input type="hidden" name="ticketType" id="ticketType" value="standard">
                 <input type="hidden" name="selectedPrice" id="selectedPrice" value="{{ $event->price }}">
-                <!-- Header -->
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-gray-900">Purchase Tickets</h3>
@@ -425,16 +394,13 @@ button:hover {
                     </div>
                 </div>
 
-                <!-- Content -->
                 <div class="p-6">
-                    <!-- Error Display -->
                     @if(session('error'))
                         <div class="mb-4 bg-red-50 border border-red-200 rounded-lg p-3">
                             <p class="text-sm text-red-600">{{ session('error') }}</p>
                         </div>
                     @endif
 
-                    <!-- Event Info -->
                     <div class="mb-6">
                         <h4 class="font-medium text-gray-900 mb-3">{{ $event->title }}</h4>
                         <div class="text-sm text-gray-600 space-y-1">
@@ -443,7 +409,6 @@ button:hover {
                         </div>
                     </div>
 
-                    <!-- Price and Quantity -->
                     <div class="mb-6">
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-gray-700">Ticket Price:</span>
@@ -473,7 +438,6 @@ button:hover {
                         @enderror
                     </div>
 
-                    <!-- Total -->
                     <div class="border-t border-gray-200 pt-4 mb-6">
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-semibold text-gray-900">Total:</span>
@@ -482,7 +446,6 @@ button:hover {
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-500">🔒 Secured by Stripe</p>
@@ -504,7 +467,6 @@ button:hover {
 @endauth
 
 <script>
-    // Modal functions
     function openTicketModal() {
         console.log('Opening ticket modal...');
         const modal = document.getElementById('ticketModal');
@@ -513,10 +475,8 @@ button:hover {
             document.body.style.overflow = 'hidden';
             document.body.style.paddingRight = getScrollbarWidth() + 'px'; // Prevent layout shift
 
-            // Initialize the total calculation
             updateTotal();
 
-            // Focus trap for accessibility
             const firstFocusable = modal.querySelector('button, input, select, textarea');
             if (firstFocusable) {
                 setTimeout(() => firstFocusable.focus(), 100);
@@ -541,7 +501,6 @@ button:hover {
         }
     }
 
-    // Helper function to get scrollbar width
     function getScrollbarWidth() {
         const outer = document.createElement('div');
         outer.style.visibility = 'hidden';
@@ -558,7 +517,6 @@ button:hover {
         return scrollbarWidth;
     }
 
-    // Debug function to check elements
     function debugElements() {
         const elements = {
             modal: document.getElementById('ticketModal'),
@@ -578,9 +536,7 @@ button:hover {
         });
     }
 
-    // Enhanced modal event handling
     document.addEventListener('DOMContentLoaded', function() {
-        // Debug elements on page load
         debugElements();
 
         const modal = document.getElementById('ticketModal');
@@ -590,14 +546,12 @@ button:hover {
         const purchaseText = document.getElementById('purchaseText');
 
         if (modal) {
-            // Close modal when clicking outside
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     closeTicketModal();
                 }
             });
 
-            // Close modal with Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                     closeTicketModal();
@@ -605,10 +559,8 @@ button:hover {
             });
         }
 
-        // Enhanced form submission with loading state
         if (form && purchaseBtn) {
             form.addEventListener('submit', function(e) {
-                // Validate quantity
                 const quantity = parseInt(document.getElementById('quantity').value);
                 if (!quantity || quantity < 1 || quantity > 10) {
                     e.preventDefault();
@@ -618,20 +570,16 @@ button:hover {
 
                 console.log('Form submitting with quantity:', quantity);
 
-                // Show loading state
                 purchaseBtn.disabled = true;
                 purchaseBtn.classList.add('opacity-75', 'cursor-not-allowed');
                 if (loadingSpinner) loadingSpinner.classList.remove('hidden');
                 if (purchaseText) purchaseText.textContent = 'Processing...';
 
-                // Add a small delay to show the loading state
                 setTimeout(() => {
-                    // Form will submit naturally after this
                 }, 300);
             });
         }
 
-        // Auto-hide error messages after 10 seconds
         const errorAlert = document.querySelector('.bg-red-50');
         if (errorAlert) {
             setTimeout(() => {
@@ -644,7 +592,6 @@ button:hover {
         }
     });
 
-    // Quantity functions
     function increaseQuantity() {
         console.log('Increase quantity clicked');
         const quantityInput = document.getElementById('quantity');
@@ -671,38 +618,32 @@ button:hover {
         }
     }
 
-    // Price calculation functions
 
 
     function updateTotal() {
-        const basePrice = {{ $event->price }}; // Get the base price from Laravel
+        const basePrice = {{ $event->price }};
         const quantity = parseInt(document.getElementById('quantity').value) || 1;
         const total = basePrice * quantity;
 
-        // Update the total price display with animation
         const totalPriceElement = document.getElementById('totalPrice');
         if (totalPriceElement) {
-            // Add a brief highlight effect to show the price changed
             totalPriceElement.style.transition = 'color 0.3s ease';
-            totalPriceElement.style.color = '#059669'; // Green color
+            totalPriceElement.style.color = '#059669'; 
             totalPriceElement.textContent = '$' + total.toFixed(2);
 
-            // Reset color after animation
             setTimeout(() => {
-                totalPriceElement.style.color = '#2563eb'; // Back to blue
+                totalPriceElement.style.color = '#2563eb';
             }, 300);
         }
 
-        // Update the hidden selectedPrice field for form submission
         const selectedPriceElement = document.getElementById('selectedPrice');
         if (selectedPriceElement) {
             selectedPriceElement.value = total.toFixed(2);
         }
 
-        console.log('Price updated:', { basePrice, quantity, total }); // Debug log
+        console.log('Price updated:', { basePrice, quantity, total }); 
     }
 
-    // Share function
     function shareEvent() {
         if (navigator.share) {
             navigator.share({
@@ -711,14 +652,12 @@ button:hover {
                 url: window.location.href
             });
         } else {
-            // Fallback to copying URL
-            navigator.clipboard.writeText(window.location.href).then(() => {
+          navigator.clipboard.writeText(window.location.href).then(() => {
                 alert('Event URL copied to clipboard!');
             });
         }
     }
 
-    // Close modal when clicking outside
     document.addEventListener('click', function(event) {
         const modal = document.getElementById('ticketModal');
         if (event.target === modal) {
@@ -726,14 +665,12 @@ button:hover {
         }
     });
 
-    // Close modal with Escape key
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeTicketModal();
         }
     });
 
-    // Form submission with loading state
     document.getElementById('ticketForm').addEventListener('submit', function(e) {
         console.log('Form submission started...');
 
@@ -743,7 +680,6 @@ button:hover {
 
         console.log('Form values:', { ticketType, quantity, price });
 
-        // Validate form
         if (!ticketType) {
             alert('Please select a ticket type.');
             e.preventDefault();
@@ -764,7 +700,6 @@ button:hover {
 
         console.log('Form validation passed, submitting...');
 
-        // Show loading state
         const purchaseBtn = document.getElementById('purchaseBtn');
         const purchaseText = document.getElementById('purchaseText');
         const purchaseIcon = document.getElementById('purchaseIcon');
@@ -779,11 +714,9 @@ button:hover {
         purchaseBtn.classList.add('opacity-75');
     });
 
-    // Handle cancelled payments
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('cancelled') === '1') {
         alert('Payment was cancelled. You can try again anytime.');
-        // Remove the parameter from URL
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 </script>

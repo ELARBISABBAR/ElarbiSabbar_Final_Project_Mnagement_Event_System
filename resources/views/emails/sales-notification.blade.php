@@ -18,7 +18,6 @@
         @endif
     </div>
     
-    <!-- Sale Details -->
     <h3>💳 Sale Information</h3>
     <div class="info-box">
         <h4>Transaction Details</h4>
@@ -32,7 +31,6 @@
         </p>
     </div>
     
-    <!-- Customer Details -->
     <h3>👤 Customer Information</h3>
     <div class="info-box">
         <h4>Attendee Details</h4>
@@ -46,7 +44,6 @@
         </p>
     </div>
     
-    <!-- Event Summary -->
     <h3>📅 Event Summary</h3>
     <div class="info-box">
         <h4>{{ $event->title }}</h4>
@@ -60,7 +57,6 @@
         </p>
     </div>
     
-    <!-- Sales Statistics -->
     @php
         $totalTicketsSold = $event->tickets->where('is_paid', true)->sum('quantity');
         $totalRevenue = $event->tickets->where('is_paid', true)->sum('total_amount');
@@ -78,7 +74,6 @@
         </p>
     </div>
     
-    <!-- Action Buttons -->
     <div style="text-align: center; margin: 30px 0;">
         <a href="{{ url('/create_events') }}" class="btn" style="margin-right: 10px;">
             Manage Event
@@ -88,7 +83,6 @@
         </a>
     </div>
     
-    <!-- Next Steps -->
     <h3>🚀 What's Next?</h3>
     <ul>
         <li><strong>Prepare for Success:</strong> More attendees might be on the way!</li>
@@ -107,7 +101,6 @@
         </p>
     </div>
     
-    <!-- Payment Information -->
     <h3>💰 Payment Processing</h3>
     <p>Your payment will be processed according to your payout schedule:</p>
     <ul>
@@ -117,7 +110,6 @@
         <li>📊 <strong>Detailed Reports:</strong> Available in your organizer dashboard</li>
     </ul>
     
-    <!-- Contact Information -->
     <h3>📞 Need Support?</h3>
     <p>If you have questions about this sale or need help with your event:</p>
     <ul>

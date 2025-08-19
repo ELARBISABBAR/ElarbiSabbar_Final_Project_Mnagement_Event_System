@@ -15,7 +15,6 @@
         <p>Please review this event for content appropriateness, accuracy, and compliance with platform guidelines.</p>
     </div>
     
-    <!-- Event Details -->
     <h3>📅 Event Information</h3>
     <div class="info-box">
         <h4>{{ $event->title }}</h4>
@@ -33,7 +32,6 @@
         </p>
     </div>
     
-    <!-- Event Description -->
     @if($event->description)
         <h3>📋 Event Description</h3>
         <div class="info-box">
@@ -41,7 +39,6 @@
         </div>
     @endif
     
-    <!-- Organizer Details -->
     <h3>👤 Organizer Information</h3>
     <div class="info-box">
         <h4>Organizer Details</h4>
@@ -57,7 +54,6 @@
         </p>
     </div>
     
-    <!-- Organizer Statistics -->
     @php
         $organizerEvents = $organizer->events()->count();
         $totalTicketsSold = $organizer->events()->withCount(['tickets' => function($query) {
@@ -76,7 +72,6 @@
         </p>
     </div>
     
-    <!-- Review Checklist -->
     <h3>📋 Review Checklist</h3>
     <p>Please verify the following before approving this event:</p>
     <ul>
@@ -89,7 +84,6 @@
         <li>✅ <strong>Guidelines Compliance:</strong> Event complies with platform guidelines</li>
     </ul>
     
-    <!-- Action Buttons -->
     <div style="text-align: center; margin: 30px 0;">
         <a href="{{ route('ticket.show', $event) }}" class="btn" style="margin-right: 10px;">
             View Event Page
@@ -99,7 +93,6 @@
         </a>
     </div>
     
-    <!-- Moderation Actions -->
     <h3>⚙️ Available Actions</h3>
     <p>You can take the following actions for this event:</p>
     <ul>
@@ -110,7 +103,6 @@
         <li>🏷️ <strong>Update Category:</strong> Correct the event category if needed</li>
     </ul>
     
-    <!-- Platform Statistics -->
     @php
         $totalEvents = \App\Models\Events::count();
         $todayEvents = \App\Models\Events::whereDate('created_at', today())->count();
@@ -128,7 +120,6 @@
         </p>
     </div>
     
-    <!-- Quick Links -->
     <h3>🔗 Quick Admin Links</h3>
     <ul>
         <li>📊 <a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a></li>
@@ -138,7 +129,6 @@
         <li>⚙️ <a href="{{ url('/admin/settings') }}">Platform Settings</a></li>
     </ul>
     
-    <!-- Contact Information -->
     <h3>📞 Contact Options</h3>
     <p>If you need to contact the organizer or need support:</p>
     <ul>

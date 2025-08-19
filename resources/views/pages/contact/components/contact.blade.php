@@ -1,10 +1,6 @@
-    <!-- component -->
-    <!-- format the code its messy  -->
 
     <div class="lg:mb-16 ">
-        <!-- {/* top container with tagline and backgroundImage  */} -->
         <div class="relative">
-            <!-- {/* image section  */} -->
             <section class="w-full h-[50vh] lg:h-[64vh] bg-cover bg-center brightness-75 ">
                 <div class="absolute top-0 w-full h-full bg-center bg-cover"
                     style="
@@ -12,7 +8,6 @@
             background-attachment: fixed;
           ">
             </section>
-            <!-- {/* tagline division  */} -->
             <div class="absolute top-1/2 left-[50%] md:left-[50%] -translate-y-1/2 text-white text-center">
                 <h1 class="text-3xl md:text-5xl  font-bold">Get In Touch</h1>
                 <p class="text-sm md:text-lg pb-4">
@@ -20,22 +15,16 @@
                 </p>
             </div>
         </div>
-        <!-- {/* bottom relative container  */} -->
         <div class="w-full h-[1100px] md:h-[60vh] lg:h-[80vh]  relative">
 
-            <!-- {/* division with floating form  */} -->
             <div
                 class="absolute -top-[3%] md:-top-[10%] left-1/2 -translate-x-1/2 grid grid-cols-1 md:grid-cols-3 h-fit w-4/5 md:w-[90%] lg:w-4/5 rounded shadow overflow-hidden text-white">
-                <!-- {/* form / left div  */} -->
                 <div class="p-2 md:p-4 h-full bg-[#2c323f] col-span-2">
                     <form action="{{ route('contact.store') }} " method="post">
                         @csrf
-                        <!-- {/* form top part containing mail icon and heading  */} -->
                         <div class="flex flex-col md:flex-row justify-around items-start md:items-center pt-8 p-4">
-                            <!-- {/* heading  */} -->
                             <h2 class="text-2xl md:text-3xl font-semibold">Send Us A Message</h2>
 
-                            <!-- {/* mail svg icon  */} -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-forward"
                                 width="33" height="33" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -47,9 +36,7 @@
                             </svg>
                         </div>
 
-                        <!-- {/* bottom form with input fields  */} -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-6 px-4 md:py-12 md:px-8 text-sm">
-                            <!-- {/* name input  */} -->
                             <div class="flex flex-col gap-1">
                                 <label class="font-semibold">
                                     Name <span class="text-red-500">&#42;</span>
@@ -58,7 +45,6 @@
                                     placeholder="Enter Your Name" re quired name="name" type="text" />
                             </div>
 
-                            <!-- {/* email input  */} -->
                             <div class="flex flex-col gap-1">
                                 <label class="font-semibold">
                                     Email <span class="text-red-500">&#42;</span>
@@ -67,7 +53,6 @@
                                     placeholder="Enter Your Email" r equired name="email" type="email" />
                             </div>
 
-                            <!-- {/* phone number input  */} -->
                             <div class="flex flex-col gap-1">
                                 <label class="font-semibold">
                                     Phone <span class="text-red-500">&#42;</span>
@@ -76,7 +61,6 @@
                                     placeholder="Enter Your Phone Nu mber" required name="phone" type="tel" />
                             </div>
 
-                            <!-- {/* subject input  */} -->
                             <div class="flex flex-col gap-1">
                                 <label class="font-semibold">
                                     Subject <span class="text-red-500">&#42;</span>
@@ -85,7 +69,6 @@
                                     placeholder="Enter Your Subject"  required name="subject" type="text" />
                             </div>
 
-                            <!-- {/* message input  */} -->
                             <div class="flex flex-col gap-1 md:col-span-2">
                                 <label class="font-semibold">
                                     Message <span class="text-red-500">&#42;</span>
@@ -94,9 +77,7 @@
                                     placeholder="Enter Your Message"  required name="message" type="text" />
                             </div>
                         </div>
-                        <!-- {/* submit button div  */} -->
                         <div class="flex items-center justify-center md:justify-end py-4 px-8 ">
-                            <!-- {/* submit button  */} -->
                             <button type="submit" class="btn-outline btn-lg border-white text-white hover:bg-white hover:text-[#2c323f]">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="w-5 h-5 mr-2"
@@ -112,13 +93,10 @@
 
                 </div>
 
-                <!-- {/* right div  */} -->
                 <div class="py-6 px-4 h-[fit-content] md:h-full bg-slate-100 text-[#2c323f]  flex flex-col  gap-y-20 justify-center">
                     <div>
-                        <!-- {/* heading tag  */} -->
                         <h2 class="text-xl lg:text-2xl text-center md:text-start font-semibold">Contact Information</h2>
 
-                        <!-- {/* email and icon  */} -->
                         <div class="row-span-4 flex flex-col items-center ">
                             <i class="fa-solid fa-envelope-circle-check text-gray-500 cursor-pointer hover:text-gray-700 text-3xl mb-2"></i>
                             <span class="text-lg">contact@evenxt.com</span>
@@ -126,7 +104,6 @@
                     </div>
 
                     <div>
-                        <!-- {/* social icons div  */} -->
                     
                         <h2 class="text-xl lg:text-2xl text-center md:text-start font-semibold">Follow us :</h2>
                         <div class="mt-2 text-center ">

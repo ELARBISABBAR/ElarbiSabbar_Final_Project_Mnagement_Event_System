@@ -18,7 +18,6 @@
         @endif
     </div>
     
-    <!-- Event Details -->
     <h3>📅 Event Information</h3>
     <div class="info-box">
         <h4>{{ $event->title }}</h4>
@@ -33,7 +32,6 @@
         </p>
     </div>
     
-    <!-- Ticket Details -->
     <h3>🎫 Your Ticket Details</h3>
     <div class="info-box">
         <h4>Ticket Information</h4>
@@ -48,7 +46,6 @@
         </p>
     </div>
     
-    <!-- QR Code Section -->
     <div style="text-align: center; margin: 30px 0;">
         <div class="info-box">
             <h4>📱 Your Digital Ticket</h4>
@@ -67,7 +64,6 @@
         </div>
     </div>
     
-    <!-- Important Information -->
     <h3>📋 Important Information</h3>
     <ul>
         <li><strong>Arrival:</strong> Please arrive 15-30 minutes before the event starts</li>
@@ -86,7 +82,6 @@
         </p>
     </div>
     
-    <!-- Action Buttons -->
     <div style="text-align: center; margin: 30px 0;">
         <a href="{{ route('ticket.show', $event) }}" class="btn" style="margin-right: 10px;">
             View Event Details
@@ -96,7 +91,6 @@
         </a>
     </div>
     
-    <!-- Contact Information -->
     <h3>📞 Need Help?</h3>
     <p>If you have any questions about your ticket or the event:</p>
     <ul>

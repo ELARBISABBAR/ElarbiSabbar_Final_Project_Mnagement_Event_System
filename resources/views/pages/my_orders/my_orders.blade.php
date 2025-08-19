@@ -3,7 +3,6 @@
 @section('content')
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
-        <!-- Success/Error Messages -->
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6" role="alert">
                 <div class="flex">
@@ -52,7 +51,6 @@
             </div>
         @endif
 
-        <!-- Page Header -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
@@ -67,7 +65,6 @@
             </div>
         </div>
 
-        <!-- Order Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             @php
                 $totalSpent = $tickets->where('is_paid', true)->sum(function($ticket) {
@@ -144,7 +141,6 @@
         </div>
 
         @if($tickets->count() > 0)
-            <!-- Orders List -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="text-lg font-semibold text-secondary-900">Your Orders</h3>
@@ -176,13 +172,11 @@
                         <tbody class="bg-white divide-y divide-secondary-200">
                             @foreach($tickets as $ticket)
                                 <tr class="hover:bg-secondary-50 transition-colors duration-200">
-                                    <!-- Order Details -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-secondary-900">Order #{{ $ticket->id }}</div>
                                         <div class="text-sm text-secondary-500">{{ $ticket->created_at->format('M j, Y \a\t g:i A') }}</div>
                                     </td>
 
-                                    <!-- Event -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
@@ -203,7 +197,6 @@
                                         </div>
                                     </td>
 
-                                    <!-- Ticket Info -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-secondary-900">
                                             <span class="capitalize">{{ $ticket->ticket_type }}</span> Ticket
@@ -213,14 +206,12 @@
                                         </div>
                                     </td>
 
-                                    <!-- Total -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-secondary-900">
                                             ${{ number_format($ticket->price * $ticket->quantity, 2) }}
                                         </div>
                                     </td>
 
-                                    <!-- Status -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($ticket->is_paid)
                                             <span class="badge-success">Paid</span>
@@ -229,7 +220,6 @@
                                         @endif
                                     </td>
 
-                                    <!-- Actions -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex items-center justify-end space-x-2">
                                             @if($ticket->is_paid)
@@ -279,7 +269,6 @@
                 </div>
             </div>
         @else
-            <!-- Empty State -->
             <div class="card">
                 <div class="card-body text-center py-12">
                     <svg class="w-16 h-16 text-secondary-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

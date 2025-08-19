@@ -1,10 +1,8 @@
 @extends('layouts.index')
 
 @section('content')
-    <!-- Hero Section -->
     @include('pages.home.components.heroSection')
 
-    <!-- Success/Error Messages -->
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 container-custom" role="alert">
             <div class="flex">
@@ -37,12 +35,10 @@
         </div>
     @endif
 
-    <!-- Search and Filter Section -->
     <section id="events" class="bg-white py-8 border-b border-secondary-200">
         <div class="container-custom">
             <form method="GET" action="{{ route('home') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <!-- Search Input -->
                     <div class="lg:col-span-2">
                         <input
                             type="text"
@@ -55,7 +51,6 @@
                         >
                     </div>
 
-                    <!-- Category Filter -->
                     <div>
                         <select name="category" class="form-input w-full">
                             <option value="">All Categories</option>
@@ -67,7 +62,6 @@
                         </select>
                     </div>
 
-                    <!-- Location Filter -->
                     <div>
                         <select name="location" class="form-input w-full">
                             <option value="">All Locations</option>
@@ -79,7 +73,6 @@
                         </select>
                     </div>
 
-                    <!-- Search Button -->
                     <div>
                         <button type="submit" class="btn-primary w-full">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Advanced Filters (Collapsible) -->
                 <div x-data="{ showFilters: false }" class="space-y-4">
                     <button
                         type="button"
@@ -105,7 +97,6 @@
 
                     <div x-show="showFilters" x-transition class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <!-- Price Range -->
                             <div>
                                 <label class="form-label">Min Price</label>
                                 <input
@@ -132,7 +123,6 @@
                                 >
                             </div>
 
-                            <!-- Date Range -->
                             <div>
                                 <label class="form-label">From Date</label>
                                 <input
@@ -153,8 +143,6 @@
                                 >
                             </div>
                         </div>
-
-                        <!-- Additional Options -->
                         <div class="flex items-center space-x-6">
                             <label class="flex items-center">
                                 <input
@@ -186,7 +174,6 @@
                     </div>
                 </div>
 
-                <!-- Clear Filters -->
                 @if(request()->hasAny(['search', 'location', 'min_price', 'max_price', 'date_from', 'date_to', 'show_past']))
                     <div class="flex justify-end">
                         <a href="{{ route('home') }}" class="btn-outline-secondary">
@@ -198,10 +185,8 @@
         </div>
     </section>
 
-    <!-- Events Section -->
     <section class="py-16 bg-gradient-to-br from-secondary-50 to-white">
         <div class="container-custom">
-            <!-- Section Header -->
             <div class="text-center mb-16">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-6">
                     <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,7 +204,6 @@
 
             </div>
 
-            <!-- Events Grid -->
             @if($events->count() > 0)
                 <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8">
                     @foreach ($events as $event)
@@ -227,7 +211,6 @@
                     @endforeach
                 </div>
 
-                <!-- Event Count Indicator - Moved below events grid -->
                 <div id="eventCountIndicator" class="flex justify-center mb-8">
                     <div class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm border border-secondary-200">
                         <svg class="w-5 h-5 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +222,6 @@
                     </div>
                 </div>
 
-                <!-- No Results Message (Hidden by default) -->
                 <div id="noResultsMessage" class="text-center py-12 hidden">
                     <svg class="w-16 h-16 text-secondary-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -253,7 +235,6 @@
                     </button>
                 </div>
 
-                <!-- Pagination - Only show when more than 4 events -->
                 @if($events->total() > 4)
                     {{-- <div class="flex justify-center">
                         <div class="bg-white rounded-xl shadow-soft border border-secondary-200 p-4">
@@ -262,7 +243,6 @@
                     </div> --}}
                 @endif
             @else
-                <!-- No Events Found -->
                 <div class="text-center py-12">
                     <svg class="w-16 h-16 text-secondary-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -285,7 +265,6 @@
         </div>
     </section>
 
-    <!-- Additional Sections -->
     @include("pages.home.components.infos")
     @include('pages.home.components.statistic')
     @include('pages.home.components.sponsor')
@@ -304,20 +283,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let allEvents = [];
     let searchTimeout;
 
-    // Store original event data
     if (eventsGrid) {
         allEvents = Array.from(eventsGrid.querySelectorAll('.event-card'));
     }
 
-    // Store original count text
     const originalCountText = eventCountText ? eventCountText.textContent : '';
     const totalEvents = allEvents.length;
 
-    // Real-time search function
     function performLiveSearch(searchTerm) {
         const query = searchTerm.toLowerCase().trim();
 
-        // Add visual feedback for active search
         if (query !== '') {
             searchInput.classList.add('ring-2', 'ring-primary-200', 'border-primary-300');
         } else {
@@ -325,7 +300,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (query === '') {
-            // Show all events when search is empty
             showAllEvents();
             return;
         }
@@ -339,7 +313,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const category = eventCard.dataset.category || '';
             const organizer = eventCard.dataset.organizer || '';
 
-            // Check if search term matches any of the searchable fields
             const matches = title.includes(query) ||
                           description.includes(query) ||
                           location.includes(query) ||
@@ -356,7 +329,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Update count and show/hide no results message
         updateEventCount(visibleEvents.length, query);
 
         if (visibleEvents.length === 0) {
@@ -366,14 +338,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show all events
     function showAllEvents() {
         allEvents.forEach(eventCard => {
             eventCard.style.display = 'block';
             eventCard.classList.remove('hidden');
         });
 
-        // Restore original count
         if (eventCountText) {
             eventCountText.textContent = originalCountText;
         }
@@ -381,7 +351,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hideNoResults();
     }
 
-    // Update event count display
     function updateEventCount(visibleCount, searchTerm) {
         if (eventCountText) {
             if (searchTerm) {
@@ -392,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Show no results message
     function showNoResults() {
         if (noResultsMessage) {
             noResultsMessage.classList.remove('hidden');
@@ -402,7 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Hide no results message
     function hideNoResults() {
         if (noResultsMessage) {
             noResultsMessage.classList.add('hidden');
@@ -412,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Clear search function
     function clearSearch() {
         if (searchInput) {
             searchInput.value = '';
@@ -422,24 +388,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listeners
     if (searchInput) {
-        // Real-time search with debouncing
         searchInput.addEventListener('input', function(e) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 performLiveSearch(e.target.value);
-            }, 150); // 150ms debounce for better performance
+            }, 150); 
         });
 
-        // Handle paste events
         searchInput.addEventListener('paste', function(e) {
             setTimeout(() => {
                 performLiveSearch(e.target.value);
             }, 10);
         });
 
-        // Handle clear button (X) in search input
         searchInput.addEventListener('search', function(e) {
             if (e.target.value === '') {
                 showAllEvents();
@@ -447,12 +409,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Clear search button
     if (clearSearchBtn) {
         clearSearchBtn.addEventListener('click', clearSearch);
     }
 
-    // Handle browser back/forward buttons
     window.addEventListener('popstate', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const searchParam = urlParams.get('search');
@@ -462,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initialize search if there's a value in the input
     if (searchInput && searchInput.value.trim() !== '') {
         performLiveSearch(searchInput.value);
     }

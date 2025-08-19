@@ -1,6 +1,5 @@
 @extends('layouts.index')
 @section('content')
-<!-- component -->
 <style>
     .w-70 {
         width: 20rem;

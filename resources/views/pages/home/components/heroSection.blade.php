@@ -1,16 +1,12 @@
 
 
-<!-- Hero Section -->
 <section class="relative bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 overflow-hidden">
-    <!-- Background Pattern -->
     <div class="absolute inset-0 bg-black opacity-20 "></div>
     <div class="absolute inset-0" style="background-image: url('{{ asset('images/scene2.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
     <div class="absolute inset-0 "></div>
 
-    <!-- Content -->
     <div class="relative container-custom py-24 lg:py-32">
         <div class="max-w-4xl mx-auto text-center">
-            <!-- Hero Logo -->
             <div class="flex justify-center mb-8 animate-fade-in">
                 <div class="logo-container logo-animated">
                     <div class="logo-icon-hero">
@@ -24,7 +20,6 @@
                 </div>
             </div>
 
-            <!-- Main Heading -->
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-6 animate-fade-in">
                 Discover Amazing
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-300">
@@ -33,12 +28,10 @@
                 Near You
             </h1>
 
-            <!-- Subtitle -->
             <p class="text-xl md:text-2xl text-white mb-8 animate-slide-up">
                 From conferences to concerts, workshops to festivals - find experiences that inspire and connect you with like-minded people.
             </p>
 
-            <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
                 <a href="#events" onclick="scrollToEvents(event)" class="btn-primary btn-lg bg-white text-primary-700 hover:bg-primary-50 shadow-large transform hover:scale-105 transition-all duration-300">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +63,6 @@
                 @endauth
             </div>
 
-            <!-- Stats -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-16 pt-8 border-t border-primary-400/30">
                 <div class="text-center">
                     <div class="text-3xl font-bold text-white mb-2">{{ \App\Models\Events::count() }}+</div>
@@ -88,7 +80,6 @@
         </div>
     </div>
 
-    <!-- Scroll Indicator -->
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -100,11 +91,9 @@
 function scrollToEvents(event) {
     event.preventDefault();
 
-    // Find the events section - it could be the search section or the events section
     const searchSection = document.querySelector('section.bg-white.py-8.border-b');
     const eventsSection = document.querySelector('section.py-12.bg-secondary-50');
 
-    // Prefer the search section if it exists, otherwise use events section
     const targetSection = searchSection || eventsSection;
 
     if (targetSection) {

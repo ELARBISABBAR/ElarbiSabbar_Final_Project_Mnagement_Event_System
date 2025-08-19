@@ -4,7 +4,6 @@
      data-location="{{ strtolower($event->location) }}"
      data-category="{{ $event->category ? strtolower($event->category->name) : '' }}"
      data-organizer="{{ strtolower($event->user->name) }}">
-    <!-- Event Image -->
     <div class="relative overflow-hidden rounded-t-xl">
         @if($event->image && file_exists(public_path('storage/img/' . $event->image)))
             <img
@@ -14,11 +13,9 @@
             >
         @else
             @php
-                // Smart image selection based on event title and type
                 $eventTitle = strtolower($event->title);
                 $eventDescription = strtolower($event->description);
 
-                // Define image categories with high-quality Unsplash images
                 $imageCategories = [
                     'tech' => [
                         'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop&crop=center', // Tech conference
@@ -70,8 +67,7 @@
                     ]
                 ];
 
-                // Determine category based on event title and description
-                $selectedCategory = 'networking'; // default
+                $selectedCategory = 'networking'; 
 
                 if (str_contains($eventTitle, 'tech') || str_contains($eventTitle, 'conference') ||
                     str_contains($eventTitle, 'innovation') || str_contains($eventTitle, 'digital') ||
@@ -103,7 +99,6 @@
                     $selectedCategory = 'education';
                 }
 
-                // Select image based on event ID for consistency
                 $images = $imageCategories[$selectedCategory];
                 $imageIndex = $event->id % count($images);
                 $selectedImage = $images[$imageIndex];
@@ -116,14 +111,12 @@
             >
         @endif
 
-        <!-- Price Badge -->
         <div class="absolute top-4 right-4">
             <div class="bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-bold px-3 py-2 rounded-full shadow-lg backdrop-blur-sm">
                 {{ number_format($event->price, 0) }} MAD
             </div>
         </div>
 
-        <!-- Visibility Badge -->
         <div class="absolute bottom-4 right-4">
             @if($event->visibility === 'public')
                 <div class="bg-green-500/90 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
@@ -140,7 +133,6 @@
             @endif
         </div>
 
-        <!-- Date Badge -->
         <div class="absolute top-4 left-4">
             <div class="bg-white/90 backdrop-blur-sm rounded-xl p-3 text-center shadow-lg border border-white/20">
                 <div class="text-xs font-semibold text-secondary-600 uppercase tracking-wide">
@@ -152,16 +144,12 @@
             </div>
         </div>
 
-        <!-- Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     </div>
 
-    <!-- Event Content -->
     <div class="event-card-content p-6">
-        <!-- Event Title -->
         <h3 class="text-xl font-bold text-secondary-900 mb-3 group-hover:text-primary-600 transition-colors duration-300 line-clamp-2">{{ $event->title }}</h3>
 
-        <!-- Category Badge -->
         @if($event->category)
             <div class="mb-3">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
@@ -176,12 +164,9 @@
             </div>
         @endif
 
-        <!-- Event Description -->
         <p class="text-secondary-600 text-sm mb-4 line-clamp-2 leading-relaxed">{{ $event->description }}</p>
 
-        <!-- Event Meta Information -->
         <div class="space-y-3 mb-6">
-            <!-- Location -->
             <div class="flex items-center text-sm text-secondary-500">
                 <div class="flex-shrink-0 w-5 h-5 mr-3 bg-secondary-100 rounded-full flex items-center justify-center">
                     <svg class="w-3 h-3 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,7 +177,6 @@
                 <span class="truncate font-medium">{{ $event->location }}</span>
             </div>
 
-            <!-- Date and Time -->
             <div class="flex items-center text-sm text-secondary-500">
                 <div class="flex-shrink-0 w-5 h-5 mr-3 bg-secondary-100 rounded-full flex items-center justify-center">
                     <svg class="w-3 h-3 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,7 +186,6 @@
                 <span class="font-medium">{{ $event->date_start->format('M j, Y \a\t g:i A') }}</span>
             </div>
 
-            <!-- Organizer -->
             <div class="flex items-center text-sm text-secondary-500">
                 <div class="flex-shrink-0 w-5 h-5 mr-3 bg-secondary-100 rounded-full flex items-center justify-center">
                     <svg class="w-3 h-3 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,9 +196,7 @@
             </div>
         </div>
 
-        <!-- Rating and Ticket Info -->
         <div class="border-t border-secondary-100 pt-4">
-            <!-- Rating Display -->
             @if($event->total_reviews > 0)
                 <div class="flex items-center mb-3">
                     <div class="flex items-center space-x-1">
@@ -233,7 +214,6 @@
             @endif
 
             <div class="flex items-center justify-between mb-4">
-                <!-- Ticket Count -->
                 @php
                     $ticketCount = $event->tickets->where('is_paid', true)->sum('quantity');
                 @endphp
@@ -255,7 +235,6 @@
                     @endif
                 </div>
 
-                <!-- Favorite Button -->
                 <button class="p-2 rounded-full hover:bg-secondary-100 transition-colors duration-200 group/fav">
                     <svg class="w-5 h-5 text-secondary-400 group-hover/fav:text-red-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
@@ -263,7 +242,6 @@
                 </button>
             </div>
 
-            <!-- Buy Button -->
             <form action="{{ route('ticket.show', $event) }}" method="get" class="w-full">
                 <button type="submit" class="w-full btn-primary group-hover:shadow-lg transition-all duration-300">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

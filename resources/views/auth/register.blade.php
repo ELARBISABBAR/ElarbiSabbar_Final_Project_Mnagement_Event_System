@@ -2,7 +2,6 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" class="block mt-1 w-full border-2 " placeholder="insert your name" type="text" name="name" :value="old('name')" required
@@ -10,21 +9,18 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <!-- Email Address -->
         <div class="mt-2">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full rounded-lg  border-2" placeholder="insert your  email" type="email" name="email" :value="old('email')"
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-        <!-- phone -->
         <div class="mt-2">
             <x-input-label for="phone" :value="__('Phone')" />
             <x-text-input id="phone" class="block mt-1 w-full border-2  rounded-lg  " placeholder="insert your phone number" type="number" name="phone"
                 :value="old('phone')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
-        <!-- role -->
         <div class="mt-2">
             <x-input-label for="role" :value="__('Register as')" />
             <select name="role" id="role" class="block mt-1 w-full border-2 rounded-lg  border-[#d1d5db]" type="text"
@@ -36,7 +32,6 @@
 
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
-        <!-- Password -->
         <div class="mt-2">
             <x-input-label for="password" :value="__('Password')" />
 
@@ -46,7 +41,6 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
         <div class="mt-2">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 

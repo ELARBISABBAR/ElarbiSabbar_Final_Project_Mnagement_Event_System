@@ -2,9 +2,7 @@
 
 @section('content2')
 <div class="min-h-screen bg-secondary-50 py-8">
-    <div class="container-custom">
-        <!-- Page Header -->
-        <div class="mb-8">
+    <div class="container-custom">        <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-secondary-900">Event Management</h1>
@@ -18,7 +16,6 @@
             </div>
         </div>
 
-        <!-- Event Statistics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="card">
                 <div class="card-body">
@@ -85,7 +82,6 @@
             </div>
         </div>
 
-        <!-- Events Table -->
         <div class="card">
             <div class="card-header">
                 <h3 class="text-lg font-semibold text-secondary-900">All Events</h3>
@@ -117,7 +113,6 @@
                     <tbody class="bg-white divide-y divide-secondary-200">
                         @forelse($events as $event)
                             <tr class="hover:bg-secondary-50 transition-colors duration-200">
-                                <!-- Event Details -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-12 w-12">
@@ -138,7 +133,6 @@
                                     </div>
                                 </td>
 
-                                <!-- Organizer -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-8 w-8">
@@ -153,19 +147,16 @@
                                     </div>
                                 </td>
 
-                                <!-- Date & Location -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-secondary-900">{{ $event->date_start->format('M j, Y') }}</div>
                                     <div class="text-sm text-secondary-500">{{ $event->date_start->format('g:i A') }}</div>
                                     <div class="text-sm text-secondary-500 mt-1">{{ Str::limit($event->location, 30) }}</div>
                                 </td>
 
-                                <!-- Price -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-secondary-900">${{ number_format($event->price, 2) }}</div>
                                 </td>
 
-                                <!-- Status -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($event->status === 'approved')
                                         <span class="badge-success">Approved</span>
@@ -189,10 +180,8 @@
                                     @endif
                                 </td>
 
-                                <!-- Actions -->
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end space-x-2">
-                                        <!-- View Event -->
                                         <a
                                             href="{{ route('ticket.show', $event) }}"
                                             class="text-secondary-600 hover:text-secondary-900 transition-colors duration-200"
@@ -205,7 +194,6 @@
                                         </a>
 
                                         @if($event->status === 'pending')
-                                            <!-- Approve Button -->
                                             <form method="POST" action="{{ route('event_admin.approve', $event) }}" class="inline">
                                                 @csrf
                                                 @method('PATCH')
@@ -221,7 +209,6 @@
                                                 </button>
                                             </form>
 
-                                            <!-- Reject Button -->
                                             <button
                                                 onclick="showRejectModal({{ $event->id }}, '{{ $event->title }}')"
                                                 class="text-warning-600 hover:text-warning-900 transition-colors duration-200"
@@ -233,7 +220,6 @@
                                             </button>
                                         @endif
 
-                                        <!-- Delete Button -->
                                         <form method="POST" action="{{ route('event_admin.delete', $event) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -271,7 +257,6 @@
     </div>
 </div>
 
-<!-- Reject Event Modal -->
 <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
@@ -312,7 +297,6 @@
 </div>
 
 <script>
-    // Show reject modal
     function showRejectModal(eventId, eventTitle) {
         const modal = document.getElementById('rejectModal');
         const form = document.getElementById('rejectForm');
@@ -320,7 +304,6 @@
         modal.classList.remove('hidden');
     }
 
-    // Hide reject modal
     function hideRejectModal() {
         const modal = document.getElementById('rejectModal');
         const form = document.getElementById('rejectForm');
@@ -328,7 +311,6 @@
         modal.classList.add('hidden');
     }
 
-    // Close modal when clicking outside
     document.getElementById('rejectModal').addEventListener('click', function(e) {
         if (e.target === this) {
             hideRejectModal();

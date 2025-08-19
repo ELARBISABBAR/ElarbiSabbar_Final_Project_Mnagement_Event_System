@@ -1,7 +1,6 @@
 @extends('layouts.index')
 @section('content')
 
-<!-- component -->
 <div class="p-8">
     <div class="bg-white p-4 rounded-lg shadow-xl py-8 mt-12">
         <h4 class="text-4xl font-bold text-gray-800 tracking-widest uppercase text-center">FAQ</h4>

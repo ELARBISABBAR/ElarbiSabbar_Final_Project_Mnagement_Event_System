@@ -1,4 +1,3 @@
-<!-- Button trigger modal -->
 <div >
     <button {{ $user->role == "admin" ? 'disabled' : ""  }} id="buttonModal{{ $user->id }}" type="button" class=" bg-primary text-light  my-1 px-3 py-2 rounded-lg cursor-not-allowed"
         data-bs-toggle="modal" data-bs-target="#{{ $user->id }}">
@@ -7,7 +6,6 @@
 
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="{{ $user->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -20,7 +18,6 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Name -->
                     <div>
                         <x-input-label class="pl-1 text-start" for="name" :value="__('Name')" />
                         <x-text-input id="name" class="block mt-1 w-full border-2 " placeholder="insert your name"
@@ -29,7 +26,6 @@
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
-                    <!-- Email Address -->
                     <div class="mt-4">
                         <x-input-label class="pl-1 text-start" for="email" :value="__('Email')" />
                         <x-text-input id="email" value="{{ old('email', $user->email) }}"
@@ -37,7 +33,6 @@
                             type="email" name="email" autocomplete="username" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
-                    <!-- phone -->
                     <div class="mt-4">
                         <x-input-label class="pl-1 text-start" for="phone" :value="__('phone')" />
                         <x-text-input id="phone" class="block mt-1 w-full border-2  rounded-lg  "
@@ -45,7 +40,6 @@
                             value="{{ old('phone', $user->phone) }}" autocomplete="username" />
                         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
-                    <!-- role -->
                     <div class="mt-4">
                         <x-input-label class="pl-1 text-start" for="role" :value="__('role')" />
                         <select name="role" id="role"

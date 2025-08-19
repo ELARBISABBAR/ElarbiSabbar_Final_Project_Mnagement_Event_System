@@ -3,13 +3,11 @@
 @section('content')
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
-        <!-- Page Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-secondary-900">Demo Payment</h1>
             <p class="text-secondary-600 mt-2">Complete your ticket purchase</p>
         </div>
 
-        <!-- Demo Notice -->
         <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-6" role="alert">
             <div class="flex">
                 <div class="py-1">
@@ -24,15 +22,12 @@
             </div>
         </div>
 
-        <!-- Payment Summary -->
         <div class="max-w-2xl mx-auto">
             <div class="bg-white rounded-xl shadow-soft overflow-hidden">
-                <!-- Header -->
                 <div class="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4">
                     <h2 class="text-xl font-semibold text-white">Payment Summary</h2>
                 </div>
 
-                <!-- Event Details -->
                 <div class="p-6">
                     <div class="flex items-start space-x-4 mb-6">
                         @if($event->image && file_exists(public_path('storage/img/' . $event->image)))
@@ -56,7 +51,6 @@
                         </div>
                     </div>
 
-                    <!-- Ticket Details -->
                     <div class="bg-secondary-50 rounded-lg p-4 mb-6">
                         <h4 class="font-semibold text-secondary-900 mb-3">Ticket Details</h4>
                         <div class="space-y-2">
@@ -81,11 +75,9 @@
                         </div>
                     </div>
 
-                    <!-- Demo Payment Form -->
                     <form action="{{ route('demo.payment.process', $ticket) }}" method="POST" id="demoPaymentForm">
                         @csrf
                         
-                        <!-- Fake Payment Method -->
                         <div class="mb-6">
                             <h4 class="font-semibold text-secondary-900 mb-3">Payment Method</h4>
                             <div class="border border-secondary-200 rounded-lg p-4">
@@ -101,7 +93,6 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-3">
                             <a href="{{ route('ticket.show', $event) }}" class="btn-outline-secondary flex-1 text-center">
                                 Cancel
@@ -122,7 +113,6 @@
 </div>
 
 <script>
-    // Add loading state to payment form
     document.getElementById('demoPaymentForm').addEventListener('submit', function(e) {
         const paymentBtn = document.getElementById('paymentBtn');
         const paymentText = document.getElementById('paymentText');

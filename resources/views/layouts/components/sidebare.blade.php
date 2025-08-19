@@ -7,13 +7,11 @@
                     pages
                 </button>
 
-                {{-- <p class="m-0">pages-></p> --}}
                 <ul class="dropdown-menu">
 
                     <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a></li>
                     <li><a class="dropdown-item" href="{{ route('event_admin.index') }}">Events of users</a></li>
 
-                    {{-- <li><a class="dropdown-item" href="{{ route('event.index') }}">create event</a></li> --}}
                 </ul>
             </div>
 

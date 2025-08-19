@@ -3,7 +3,6 @@
 @section('content')
     <div class="min-h-screen bg-secondary-50 py-8">
         <div id="eventManagementView" class="container-custom">
-            <!-- Page Header -->
             <div class="mb-8">
 
 
@@ -22,7 +21,6 @@
                 </div>
             </div>
 
-            <!-- Success/Error Messages -->
             @if (session('success'))
                 <div class="alert-success mb-6">
                     <div class="flex items-center">
@@ -47,7 +45,6 @@
                 </div>
             @endif
 
-            <!-- Information Banner -->
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +57,6 @@
                 </div>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="card">
                     <div class="card-body">
@@ -130,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- Events Table -->
             <div class="card">
                 <div class="card-header">
                     <h3 class="text-lg font-semibold text-secondary-900">Your Events</h3>
@@ -173,7 +168,6 @@
 
                             @forelse ($events as $event)
                                 <tr class="hover:bg-secondary-50 transition-colors duration-200">
-                                    <!-- Event Info -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-12 w-12">
@@ -203,7 +197,6 @@
                                         </div>
                                     </td>
 
-                                    <!-- Date & Location -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-secondary-900">{{ $event->date_start->format('M j, Y') }}
                                         </div>
@@ -213,13 +206,11 @@
                                             {{ Str::limit($event->location, 30) }}</div>
                                     </td>
 
-                                    <!-- Price -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-secondary-900">
                                             ${{ number_format($event->price, 2) }}</div>
                                     </td>
 
-                                    <!-- Category -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <span class="text-sm font-medium text-secondary-900">
@@ -238,7 +229,6 @@
                                         </div>
                                     </td>
 
-                                    <!-- Tickets Sold -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @php
                                             $ticketsSold = $event->tickets->where('is_paid', true)->sum('quantity');
@@ -248,10 +238,8 @@
                                         <div class="text-sm text-secondary-500">of {{ $totalTickets }} total</div>
                                     </td>
 
-                                    <!-- Status -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex flex-col space-y-1">
-                                            <!-- Approval Status -->
                                             @if ($event->status === 'approved')
                                                 <span class="badge-success">Approved</span>
                                             @elseif($event->status === 'rejected')
@@ -260,7 +248,6 @@
                                                 <span class="badge-warning">Pending Approval</span>
                                             @endif
 
-                                            <!-- Visibility Status -->
                                             @if ($event->visibility === 'public')
                                                 <span
                                                     class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -278,7 +265,6 @@
                                                 </span>
                                             @endif
 
-                                            <!-- Event Date Status -->
                                             @if ($event->status === 'approved')
                                                 @if ($event->date_start->isPast())
                                                     <span class="text-xs text-secondary-500">Completed</span>
@@ -291,7 +277,6 @@
                                         </div>
                                     </td>
 
-                                    <!-- Actions -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex items-center justify-end space-x-2">
                                             <button onclick="editEvent({{ $event->id }})"
@@ -356,7 +341,6 @@
         </div>
     </div>
 
-    <!-- Calendar View Section -->
     <div id="calendarView" class="hidden">
         <div class="container-custom">
             <div class="bg-white rounded-xl shadow-soft overflow-hidden">
@@ -386,7 +370,6 @@
 
 
 
-    <!-- Create Event Modal -->
     <div id="eventModal"
         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px;">
         <div
@@ -407,7 +390,6 @@
                 </div>
 
                 <div class="px-8 py-6 space-y-6">
-                    <!-- Event Title -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Title</label>
                         <input type="text" name="title" id="create_title" required
@@ -418,7 +400,6 @@
                         @enderror
                     </div>
 
-                    <!-- Event Description -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Description</label>
                         <textarea name="description" id="create_description" required rows="4"
@@ -429,7 +410,6 @@
                         @enderror
                     </div>
 
-                    <!-- Date and Time -->
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">start date</label>
@@ -449,7 +429,6 @@
                         </div>
                     </div>
 
-                    <!-- Price and Location -->
                     <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-base font-normal text-gray-700 mb-3">Price</label>
@@ -471,7 +450,6 @@
                         </div>
                     </div>
 
-                    <!-- Event Visibility -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Event Visibility</label>
                         <select name="visibility" id="create_visibility" required
@@ -485,7 +463,6 @@
                         @enderror
                     </div>
 
-                    <!-- Event Image -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Add picture</label>
                         <div class="relative">
@@ -506,7 +483,6 @@
                         @enderror
                     </div>
 
-                    <!-- Event Category -->
                     <div>
                         <label class="block text-base font-normal text-gray-700 mb-3">Event Category *</label>
                         <select name="category_id" id="create_category_id" required
@@ -541,7 +517,6 @@
     </div>
     </div>
 
-    <!-- Edit Event Modal -->
     <div id="editEventModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-xl shadow-large max-w-2xl w-full max-h-screen overflow-y-auto">
@@ -562,13 +537,11 @@
                     </div>
 
                     <div class="px-6 py-4 space-y-6">
-                        <!-- Event Title -->
                         <div>
                             <label class="form-label">Event Title *</label>
                             <input type="text" name="title" id="edit_title" required class="form-input">
                         </div>
 
-                        <!-- Event Description -->
                         <div>
                             <label class="form-label">Description *</label>
                             <textarea name="description" id="edit_description" required rows="4" class="form-input"></textarea>
@@ -576,7 +549,6 @@
 
 
 
-                        <!-- Date and Time -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="form-label">Start Date & Time *</label>
@@ -590,7 +562,6 @@
                             </div>
                         </div>
 
-                        <!-- Location and Price -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="form-label">Location *</label>
@@ -603,7 +574,6 @@
                             </div>
                         </div>
 
-                        <!-- Event Visibility -->
                         <div>
                             <label class="form-label">Event Visibility *</label>
                             <select name="visibility" id="edit_visibility" required class="form-input">
@@ -613,7 +583,6 @@
                             </select>
                         </div>
 
-                        <!-- Event Category -->
                         <div>
                             <label class="form-label">Event Category *</label>
                             <select name="category_id" id="edit_category_id" required class="form-input">
@@ -632,7 +601,6 @@
                             </select>
                         </div>
 
-                        <!-- Event Image -->
                         <div>
                             <label class="form-label">Event Image</label>
                             <input type="file" name="image" accept="image/*" class="form-input">
@@ -654,11 +622,9 @@
     </div>
 
     <script>
-        // Simple and reliable modal functions
         function openEventModal() {
             const modal = document.getElementById('eventModal');
             if (modal) {
-                // Clear the form when opening to prevent conflicts
                 document.getElementById('create_title').value = '';
                 document.getElementById('create_description').value = '';
                 document.getElementById('create_date_start').value = '';
@@ -681,16 +647,13 @@
             }
         }
 
-        // Initialize modal functionality when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeEventModal();
                 }
             });
 
-            // Handle click outside modal
             const modal = document.getElementById('eventModal');
             if (modal) {
                 modal.addEventListener('click', function(e) {
@@ -701,11 +664,8 @@
             }
         });
 
-        // Legacy function for backward compatibility
         function closeCreateModal() {
-            // This will be handled by Alpine.js
             if (window.Alpine && window.Alpine.store) {
-                // Use Alpine.js if available
             }
         }
 
@@ -719,9 +679,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Edit event function
         function editEvent(eventId) {
-            // Find the event data from the table or make an AJAX request
             fetch(`/event/${eventId}/edit`)
                 .then(response => response.json())
                 .then(event => {
@@ -743,7 +701,6 @@
                 });
         }
 
-        // Delete event function
         function deleteEvent(eventId, eventTitle) {
             if (confirm(`Are you sure you want to delete "${eventTitle}"? This action cannot be undone.`)) {
                 const form = document.createElement('form');
@@ -767,7 +724,6 @@
             }
         }
 
-        // Close modals when clicking outside
         document.addEventListener('click', function(event) {
             const createModal = document.getElementById('createEventModal');
             const editModal = document.getElementById('editEventModal');
@@ -780,7 +736,6 @@
             }
         });
 
-        // Close modals with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeCreateModal();
@@ -789,7 +744,6 @@
             }
         });
 
-        // Calendar functions
         function showCalendar() {
             console.log('showCalendar called');
             const calendarView = document.getElementById('calendarView');
@@ -819,7 +773,6 @@
             }
         }
 
-        // Initialize FullCalendar
         function initializeCalendar() {
             console.log('initializeCalendar called');
             const calendarEl = document.getElementById('calendar');
@@ -875,11 +828,9 @@
                     select: (info) => {
                         console.log('Calendar date selected:', info);
 
-                        // Set the selected dates in the modal
                         const startDate = new Date(info.start);
                         const endDate = new Date(info.end);
 
-                        // Format dates for datetime-local input
                         const formatForInput = (date) => {
                             const year = date.getFullYear();
                             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -889,7 +840,6 @@
                             return `${year}-${month}-${day}T${hours}:${minutes}`;
                         };
 
-                        // Set the form values - target the create modal specifically
                         const startInput = document.getElementById('create_date_start');
                         const endInput = document.getElementById('create_date_end');
 
@@ -901,7 +851,6 @@
                             console.error('Date input fields not found');
                         }
 
-                        // Open the create modal
                         openCreateModal();
                         calendar.unselect();
                     }

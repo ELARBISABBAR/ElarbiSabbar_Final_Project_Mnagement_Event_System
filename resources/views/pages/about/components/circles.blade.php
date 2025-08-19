@@ -1,4 +1,3 @@
-<!-- component -->
 
 
 
@@ -18,10 +17,6 @@
                         <h1 class="text-white  font-semibold text-5xl pt-36 pb-20">
                             Your Gateway to Extraordinary Events .
                         </h1>
-                        {{-- <p class="mt-4 text-lg text-white">
-                            Explore. Create. Connect. evenXt empowers you to discover unique experiences, manage your
-                            events seamlessly, and build lasting connections.
-                        </p> --}}
                     </div>
                 </div>
             </div>
@@ -136,19 +131,5 @@
 
 
             </div>
-            {{-- <footer class="relative  pt-8 pb-6 mt-1">
-                <div class="container mx-auto px-4">
-                    <div class="flex flex-wrap items-center md:justify-between justify-center">
-                        <div class="w-full md:w-6/12 px-4 mx-auto text-center">
-                            <div class="text-sm text-blueGray-500 font-semibold py-1">
-                                Made with <a href="https://www.creative-tim.com/product/notus-js"
-                                    class="text-blueGray-500 hover:text-gray-800" target="_blank">Notus JS</a> by <a
-                                    href="https://www.creative-tim.com"
-                                    class="text-blueGray-500 hover:text-blueGray-800" target="_blank"> Creative Tim</a>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer> --}}
     </section>
 </section>

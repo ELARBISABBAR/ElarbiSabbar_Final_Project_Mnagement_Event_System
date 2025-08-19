@@ -1,4 +1,3 @@
-<!-- component -->
 <div class="relative z-20 sm:z-auto mx-auto  my-8">
     <div class="mx-auto sm:max-w-[80vw] px-4  sm:px-6 lg:px-8">
         <h1 class="text-center pb-10">EvenXt service</h1>

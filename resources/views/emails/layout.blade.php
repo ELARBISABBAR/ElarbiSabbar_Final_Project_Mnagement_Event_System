@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Evenext')</title>
     <style>
-        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -213,20 +212,17 @@
 </head>
 <body>
     <div class="email-container">
-        <!-- Header -->
         <div class="email-header">
             <h1>@yield('header-title', 'Evenext')</h1>
             <p>@yield('header-subtitle', 'Your Event Management Platform')</p>
         </div>
         
-        <!-- Body -->
         <div class="email-body">
             <div class="email-content">
                 @yield('content')
             </div>
         </div>
         
-        <!-- Footer -->
         <div class="email-footer">
             <p><strong>Evenext</strong> - Connecting People Through Amazing Events</p>
             <p>© {{ date('Y') }} Evenext. All rights reserved.</p>

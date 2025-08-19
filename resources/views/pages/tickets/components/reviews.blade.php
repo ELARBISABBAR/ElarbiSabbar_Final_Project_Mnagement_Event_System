@@ -1,4 +1,3 @@
-<!-- Reviews Section -->
 <div class="bg-white rounded-xl shadow-soft overflow-hidden">
     <div class="p-6 border-b border-secondary-200">
         <div class="flex items-center justify-between">
@@ -14,7 +13,6 @@
                 </p>
             </div>
             
-            <!-- Average Rating Display -->
             @if($event->total_reviews > 0)
                 <div class="text-right">
                     <div class="flex items-center justify-end mb-1">
@@ -31,14 +29,12 @@
         </div>
     </div>
 
-    <!-- Write Review Section (if user can review) -->
     @if($canReview)
         <div class="p-6 bg-secondary-50 border-b border-secondary-200">
             <h4 class="font-medium text-secondary-900 mb-4">Write a Review</h4>
             <form action="{{ route('reviews.store', $event) }}" method="POST" class="space-y-4">
                 @csrf
                 
-                <!-- Rating Input -->
                 <div>
                     <label class="block text-sm font-medium text-secondary-700 mb-2">Rating</label>
                     <div class="flex items-center space-x-1" x-data="{ rating: 0, hover: 0 }">
@@ -59,7 +55,6 @@
                     </div>
                 </div>
 
-                <!-- Comment Input -->
                 <div>
                     <label for="comment" class="block text-sm font-medium text-secondary-700 mb-2">Comment (Optional)</label>
                     <textarea name="comment" id="comment" rows="3" 
@@ -67,7 +62,6 @@
                               placeholder="Share your experience with this event..."></textarea>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="flex justify-end">
                     <button type="submit" class="btn-primary">
                         Submit Review
@@ -77,7 +71,6 @@
         </div>
     @endif
 
-    <!-- Edit Review Section (if user has already reviewed) -->
     @if($userReview)
         <div class="p-6 bg-blue-50 border-b border-secondary-200">
             <div class="flex items-center justify-between mb-4">
@@ -87,7 +80,6 @@
                 </button>
             </div>
             
-            <!-- Display Current Review -->
             <div id="currentReview" class="space-y-2">
                 <div class="flex items-center space-x-1">
                     @for($i = 1; $i <= 5; $i++)
@@ -103,13 +95,11 @@
                 @endif
             </div>
 
-            <!-- Edit Form (Hidden by default) -->
             <form id="editReviewForm" action="{{ route('reviews.update', $userReview) }}" method="POST" 
                   class="space-y-4 hidden">
                 @csrf
                 @method('PUT')
                 
-                <!-- Rating Input -->
                 <div>
                     <label class="block text-sm font-medium text-secondary-700 mb-2">Rating</label>
                     <div class="flex items-center space-x-1" x-data="{ rating: {{ $userReview->rating }}, hover: 0 }">
@@ -130,14 +120,12 @@
                     </div>
                 </div>
 
-                <!-- Comment Input -->
                 <div>
                     <label for="edit_comment" class="block text-sm font-medium text-secondary-700 mb-2">Comment (Optional)</label>
                     <textarea name="comment" id="edit_comment" rows="3" 
                               class="form-input w-full">{{ $userReview->comment }}</textarea>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="flex justify-between">
                     <button type="button" onclick="deleteReview({{ $userReview->id }})" 
                             class="text-red-600 hover:text-red-700 text-sm font-medium">
@@ -153,12 +141,10 @@
         </div>
     @endif
 
-    <!-- Reviews List -->
     <div class="divide-y divide-secondary-200">
         @forelse($reviews as $review)
             <div class="p-6">
                 <div class="flex items-start space-x-4">
-                    <!-- User Avatar -->
                     <div class="flex-shrink-0">
                         <div class="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
                             <span class="text-white font-medium text-sm">
@@ -167,7 +153,6 @@
                         </div>
                     </div>
 
-                    <!-- Review Content -->
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between mb-2">
                             <div>
@@ -211,7 +196,6 @@
         @endforelse
     </div>
 
-    <!-- Pagination -->
     @if($reviews->hasPages())
         <div class="p-6 border-t border-secondary-200">
             {{ $reviews->links() }}

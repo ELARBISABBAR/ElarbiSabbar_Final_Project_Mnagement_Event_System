@@ -1,7 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white shadow-soft border-b border-secondary-200 sticky top-0 z-50">
     <div class="container-custom">
         <div class="flex justify-between items-center h-16">
-            <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="logo-container group">
                     <div class="logo-icon">
@@ -15,7 +14,6 @@
                 </a>
             </div>
 
-            <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{ route('home') }}"
                    class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : 'nav-link-inactive' }}">
@@ -35,7 +33,6 @@
                 </a>
             </div>
 
-            <!-- User Menu -->
             <div class="hidden md:flex items-center space-x-4">
                 @auth
                     <x-dropdown align="right" width="64">
@@ -134,7 +131,6 @@
                 @endauth
             </div>
 
-            <!-- Mobile menu button -->
             <div class="md:hidden">
                 <button @click="open = !open"
                     class="p-2 rounded-lg text-secondary-600 hover:bg-secondary-100 transition-colors duration-200">
@@ -147,7 +143,6 @@
         </div>
     </div>
 
-    <!-- Mobile Navigation Menu -->
     <div x-show="open" x-transition class="md:hidden border-t border-secondary-200 bg-white">
         <div class="px-4 py-2 space-y-1">
             <a href="{{ route('home') }}"

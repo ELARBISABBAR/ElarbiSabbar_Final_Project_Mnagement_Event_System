@@ -15,7 +15,6 @@
         <p>Your event is now visible to attendees and ready for ticket sales!</p>
     </div>
     
-    <!-- Event Details -->
     <h3>📅 Your Event Details</h3>
     <div class="info-box">
         <h4>{{ $event->title }}</h4>
@@ -32,7 +31,6 @@
         </p>
     </div>
     
-    <!-- Event Description -->
     @if($event->description)
         <h3>📋 Event Description</h3>
         <div class="info-box">
@@ -40,7 +38,6 @@
         </div>
     @endif
     
-    <!-- Action Buttons -->
     <div style="text-align: center; margin: 30px 0;">
         <a href="{{ route('ticket.show', $event) }}" class="btn" style="margin-right: 10px;">
             View Your Event
@@ -50,7 +47,6 @@
         </a>
     </div>
     
-    <!-- Next Steps -->
     <h3>🚀 What's Next?</h3>
     <ul>
         <li><strong>📢 Promote Your Event:</strong> Share your event link on social media and with your network</li>
@@ -70,7 +66,6 @@
         </p>
     </div>
     
-    <!-- Event Statistics -->
     <h3>📊 Current Status</h3>
     <div class="success-box">
         <h4>Event Performance</h4>
@@ -82,7 +77,6 @@
         </p>
     </div>
     
-    <!-- Promotion Ideas -->
     <h3>📢 Promotion Ideas</h3>
     <ul>
         <li>🔗 <strong>Share Event Link:</strong> {{ route('ticket.show', $event) }}</li>
@@ -93,7 +87,6 @@
         <li>🎯 <strong>Targeted Ads:</strong> Consider social media advertising for broader reach</li>
     </ul>
     
-    <!-- Support Information -->
     <h3>📞 Need Help?</h3>
     <p>We're here to help you make your event successful:</p>
     <ul>
@@ -103,7 +96,6 @@
         <li>📱 <strong>General Support:</strong> <a href="mailto:support@evenext.com">support@evenext.com</a></li>
     </ul>
     
-    <!-- Important Reminders -->
     <div class="warning-box">
         <h4>📋 Important Reminders</h4>
         <p>

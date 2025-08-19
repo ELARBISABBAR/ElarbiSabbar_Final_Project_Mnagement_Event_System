@@ -3,9 +3,7 @@
 @section('content')
 <div class="min-h-screen bg-secondary-50 py-8">
     <div class="container-custom">
-        <!-- Success Message -->
         <div class="max-w-2xl mx-auto">
-            <!-- Success Header -->
             <div class="bg-white rounded-xl shadow-soft overflow-hidden mb-6">
                 <div class="bg-gradient-to-r from-green-500 to-green-600 px-6 py-8 text-center">
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
@@ -18,14 +16,12 @@
                 </div>
             </div>
 
-            <!-- Ticket Details -->
             <div class="bg-white rounded-xl shadow-soft overflow-hidden mb-6">
                 <div class="px-6 py-4 border-b border-secondary-200">
                     <h2 class="text-xl font-semibold text-secondary-900">Ticket Details</h2>
                 </div>
                 
                 <div class="p-6">
-                    <!-- Event Info -->
                     <div class="flex items-start space-x-4 mb-6">
                         @if($ticket->event->image && file_exists(public_path('storage/img/' . $ticket->event->image)))
                             <img src="{{ asset('storage/img/' . $ticket->event->image) }}" 
@@ -58,7 +54,6 @@
                         </div>
                     </div>
 
-                    <!-- Purchase Details -->
                     <div class="bg-secondary-50 rounded-lg p-4">
                         <h4 class="font-medium text-secondary-900 mb-3">Purchase Summary</h4>
                         <div class="space-y-2">
@@ -89,10 +84,9 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="bg-white rounded-xl shadow-soft p-6">
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('my.orders') }}" class="btn-primary flex-1 text-center">
+                    <a href="{{ route('myorder.index') }}" class="btn-primary flex-1 text-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
@@ -117,7 +111,126 @@
                 </div>
             </div>
 
-            <!-- Important Notes -->
+            <!-- Partnership Section -->
+            <div class="bg-white rounded-xl shadow-soft p-6 mt-6">
+                <div class="text-center mb-6">
+                    <h3 class="text-lg font-semibold text-secondary-900 mb-2">Our Trusted Partners</h3>
+                    <p class="text-sm text-secondary-600">Proudly supported by industry-leading companies</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-items-center">
+                    <!-- Adidas -->
+                    <a href="https://www.adidas.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Adidas-Logo.png"
+                             alt="Adidas - Official Sports Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">ADIDAS</div>
+                            <div class="text-xs text-gray-500 mt-1">Sports Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- Chanel -->
+                    <a href="https://www.chanel.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-pink-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Chanel-Logo.png"
+                             alt="Chanel - Luxury Fashion Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">CHANEL</div>
+                            <div class="text-xs text-gray-500 mt-1">Fashion Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- Nike -->
+                    <a href="https://www.nike.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-orange-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png"
+                             alt="Nike - Athletic Apparel Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">NIKE</div>
+                            <div class="text-xs text-gray-500 mt-1">Athletic Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- Toyota -->
+                    <a href="https://www.toyota.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-red-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Toyota-Logo.png"
+                             alt="Toyota - Official Automotive Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">TOYOTA</div>
+                            <div class="text-xs text-gray-500 mt-1">Auto Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- Microsoft (replacing GS1) -->
+                    <a href="https://www.microsoft.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-green-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/06/Microsoft-Logo.png"
+                             alt="Microsoft - Technology Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">MICROSOFT</div>
+                            <div class="text-xs text-gray-500 mt-1">Tech Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- Apple (replacing BlackBerry) -->
+                    <a href="https://www.apple.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Apple-Logo.png"
+                             alt="Apple - Innovation Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">APPLE</div>
+                            <div class="text-xs text-gray-500 mt-1">Innovation Partner</div>
+                        </div>
+                    </a>
+
+                    <!-- BMW (replacing Mini) -->
+                    <a href="https://www.bmw.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-yellow-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/BMW-Logo.png"
+                             alt="BMW - Premium Automotive Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">BMW</div>
+                            <div class="text-xs text-gray-500 mt-1">Premium Auto</div>
+                        </div>
+                    </a>
+
+                    <!-- Honda -->
+                    <a href="https://www.honda.com" target="_blank" rel="noopener noreferrer"
+                       class="group flex items-center justify-center p-4 rounded-lg border border-secondary-200 hover:border-indigo-300 hover:shadow-md transition-all duration-300 bg-white w-full h-20">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Honda-Logo.png"
+                             alt="Honda - Mobility Solutions Partner"
+                             class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="text-center hidden group-hover:scale-105 transition-transform duration-300">
+                            <div class="text-lg font-bold text-gray-800">HONDA</div>
+                            <div class="text-xs text-gray-500 mt-1">Mobility Partner</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="text-center mt-6 pt-4 border-t border-secondary-200">
+                    <p class="text-xs text-secondary-500">
+                        These partnerships help us deliver exceptional event experiences and exclusive benefits to our attendees.
+                    </p>
+                </div>
+            </div>
+
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-6">
                 <div class="flex items-start">
                     <svg class="w-6 h-6 text-blue-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

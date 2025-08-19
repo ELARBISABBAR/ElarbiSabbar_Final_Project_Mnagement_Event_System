@@ -1,7 +1,6 @@
 <footer class="bg-secondary-900 text-white">
     <div class="container-custom py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Brand Section -->
             <div class="lg:col-span-2">
                 <div class="logo-container mb-6">
                     <div class="logo-icon-large">
@@ -18,7 +17,6 @@
                     we help you find experiences that matter.
                 </p>
 
-                <!-- Newsletter Signup -->
                 <div class="mb-6">
                     <h4 class="text-lg font-semibold mb-3">Stay Updated</h4>
                     <form class="flex flex-col sm:flex-row gap-3">
@@ -34,7 +32,6 @@
                 </div>
             </div>
 
-            <!-- Quick Links -->
             <div>
                 <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                 <ul class="space-y-3">
@@ -61,7 +58,6 @@
                 </ul>
             </div>
 
-            <!-- Support -->
             <div>
                 <h4 class="text-lg font-semibold mb-4">Support</h4>
                 <ul class="space-y-3">
@@ -89,7 +85,6 @@
             </div>
         </div>
 
-        <!-- Social Media & Copyright -->
         <div class="border-t border-secondary-800 pt-8 mt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex space-x-6 mb-4 md:mb-0">

@@ -141,15 +141,12 @@
 </head>
 <body>
     <div class="ticket">
-        <!-- Ticket Header -->
         <div class="ticket-header">
             <h1>{{ $event->title }}</h1>
             <p>Event Ticket</p>
         </div>
 
-        <!-- Ticket Body -->
         <div class="ticket-body">
-            <!-- Event Information -->
             <div class="ticket-info">
                 <div class="info-item">
                     <div class="info-label">Date & Time</div>
@@ -170,7 +167,6 @@
                 </div>
             </div>
 
-            <!-- Ticket Details -->
             <div class="ticket-details">
                 <h3>Ticket Details</h3>
                 <div class="detail-row">
@@ -195,7 +191,6 @@
                 </div>
             </div>
 
-            <!-- Event Description -->
             @if($event->description)
             <div class="ticket-details">
                 <h3>Event Description</h3>
@@ -204,7 +199,6 @@
             @endif
         </div>
 
-        <!-- Ticket Footer -->
         <div class="ticket-footer">
             <div class="qr-placeholder">
                 QR Code
@@ -218,8 +212,6 @@
     </div>
 
     <script>
-        // Auto-print when page loads (optional)
-        // window.onload = function() { window.print(); }
     </script>
 </body>
 </html>
